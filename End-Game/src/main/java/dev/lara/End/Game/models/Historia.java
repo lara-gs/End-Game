@@ -17,7 +17,7 @@ public class Historia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_historia")
-    private Long idHistoria;
+    private int idHistoria;
 
     @OneToMany(mappedBy = "historia")
     private List<Progreso> progresos;
@@ -34,16 +34,16 @@ public class Historia {
     public Historia() {
     }
 
-    public Historia(Long idHistoria, String descripcion) {
+    public Historia(int idHistoria, String descripcion) {
         this.idHistoria = idHistoria;
         this.descripcion = descripcion;
     }
 
-    public Long getIdHistoria() {
+    public int getIdHistoria() {
         return idHistoria;
     }
 
-    public void setIdHistoria(Long idHistoria) {
+    public void setIdHistoria(int idHistoria) {
         this.idHistoria = idHistoria;
     }
 

@@ -1,20 +1,29 @@
 package dev.lara.End.Game.dtos;
 
+import dev.lara.End.Game.models.Opciones;
+
 public class OpcionesDTO {
     private int idProgreso;
     private int idUsuario;
-    private int idHistoria;
-    private String fecha;
+    private int idHistoriaOrigen;
+    private int idHistoriaDestino;
 
     public OpcionesDTO(){
 
     }
 
-    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoria, String fecha) {
+    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoriaOrigen, int idHistoriaDestino) {
         this.idProgreso = idProgreso;
         this.idUsuario = idUsuario;
-        this.idHistoria = idHistoria;
-        this.fecha = fecha;
+        this.idHistoriaOrigen = idHistoriaOrigen;
+        this.idHistoriaDestino = idHistoriaDestino;
+    }
+
+    public OpcionesDTO(Opciones opciones) {
+        this.idProgreso = opciones.getId_progreso();
+        this.idUsuario = opciones.getUsuario().getIdUsuario();
+        this.idHistoriaOrigen = opciones.getIdHistoriaOrigen();
+        this.idHistoriaDestino = opciones.getIdHistoriaDestino();
     }
 
     public int getIdProgreso() {
@@ -33,21 +42,20 @@ public class OpcionesDTO {
         this.idUsuario = idUsuario;
     }
 
-    public int getIdHistoria() {
-        return idHistoria;
+    public int getIdHistoriaOrigen() {
+        return idHistoriaOrigen;
     }
 
-    public void setIdHistoria(int idHistoria) {
-        this.idHistoria = idHistoria;
+    public void setIdHistoriaOrigen(int idHistoriaOrigen) {
+        this.idHistoriaOrigen = idHistoriaOrigen;
     }
 
-    public String getFecha() {
-        return fecha;
+    public int getIdHistoriaDestino() {
+        return idHistoriaDestino;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-    
+    public void setIdHistoriaDestino(int idHistoriaDestino) {
+        this.idHistoriaDestino = idHistoriaDestino;
+    } 
     
 }

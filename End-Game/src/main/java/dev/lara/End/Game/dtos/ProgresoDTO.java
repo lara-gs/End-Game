@@ -2,6 +2,8 @@ package dev.lara.End.Game.dtos;
 
 import java.time.LocalDate;
 
+import dev.lara.End.Game.models.Progreso;
+
 public class ProgresoDTO {
     private int idProgreso;  
     private int idUsuario;   
@@ -17,6 +19,13 @@ public class ProgresoDTO {
         this.idUsuario = idUsuario;
         this.idHistoria = idHistoria;
         this.fecha = fecha;
+    }
+
+    public ProgresoDTO(Progreso progreso) {
+        this.idProgreso = progreso.getIdProgreso();
+        this.idUsuario = progreso.getUsuario().getIdUsuario();
+        this.idHistoria = progreso.getHistoria().getIdHistoria();
+        this.fecha = progreso.getFecha();
     }
 
     public int getIdProgreso() {
