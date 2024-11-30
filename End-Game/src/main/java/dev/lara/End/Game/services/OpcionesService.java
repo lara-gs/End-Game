@@ -10,7 +10,7 @@ import dev.lara.End.Game.repositories.OpcionesRepository;
 import dev.lara.End.Game.repositories.ProgresoRepository;
 
 @Service
-public class OpcionesServices {
+public class OpcionesService {
     @Autowired
     private OpcionesRepository opcionesRepository;
     @Autowired

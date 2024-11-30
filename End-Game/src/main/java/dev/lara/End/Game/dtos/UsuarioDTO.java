@@ -1,21 +1,33 @@
 package dev.lara.End.Game.dtos;
 
+import dev.lara.End.Game.models.Usuario;
+
 public class UsuarioDTO {
     private int idUsuario;
     private String nombreUsuario;
     private String correo;
-    private String rol;
-
+    private RolDTO rol;
+    private String password;
     
     public UsuarioDTO() {
     }
 
 
-    public UsuarioDTO(int idUsuario, String nombreUsuario, String correo, String rol) {
+    public UsuarioDTO(int idUsuario, String nombreUsuario, String correo, RolDTO rol, String password) {
         this.idUsuario = idUsuario;
         this.nombreUsuario = nombreUsuario;
         this.correo = correo;
         this.rol = rol;
+        this.password = password;
+    }
+
+
+    public UsuarioDTO(Usuario user) {
+        this.idUsuario = user.getIdUsuario();
+        this.nombreUsuario = user.getNombreUsuario();
+        this.correo = user.getCorreo();
+        this.rol = new RolDTO(user.getRol());
+        this.password = user.getPassword();
     }
 
 
@@ -49,15 +61,23 @@ public class UsuarioDTO {
     }
 
 
-    public String getRol() {
+    public RolDTO getRol() {
         return rol;
     }
 
 
-    public void setRol(String rol) {
+    public void setRol(RolDTO rol) {
         this.rol = rol;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
 
     
 }

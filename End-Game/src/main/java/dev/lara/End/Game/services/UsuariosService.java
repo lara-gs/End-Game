@@ -3,6 +3,7 @@ package dev.lara.End.Game.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dev.lara.End.Game.dtos.UsuarioDTO;
 import dev.lara.End.Game.models.Usuario;
 import dev.lara.End.Game.repositories.ProgresoRepository;
 import dev.lara.End.Game.repositories.UsuarioRepository;
@@ -21,10 +22,10 @@ public class UsuariosService {
 
     }
 
-    public Usuario registrarUsuario(String nombreUsuario, String correo, String password){
+    public UsuarioDTO registrarUsuario(String nombreUsuario, String correo, String password){
         Usuario usuario = new Usuario();
         usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
-        return usuarioRepository.save(usuario);
+        return new UsuarioDTO(usuarioRepository.save(usuario));
     }
 
     public void borrarUsuario(int usuarioId) {
