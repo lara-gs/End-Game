@@ -12,9 +12,9 @@ import dev.lara.End.Game.repositories.ProgresoRepository;
 @Service
 public class OpcionesServices {
     @Autowired
-    OpcionesRepository opcionesRepository;
+    private OpcionesRepository opcionesRepository;
     @Autowired
-    ProgresoRepository progresoRepository;
+    private ProgresoRepository progresoRepository;
 
     public List<OpcionesDTO> cargarOpciones(int idHistoria){
           return opcionesRepository.findAll().stream().map(opciones-> new OpcionesDTO(opciones)).toList();  

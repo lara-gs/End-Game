@@ -16,11 +16,11 @@ import dev.lara.End.Game.repositories.UsuarioRepository;
 @Service
 public class ProgresoService {
     @Autowired
-    UsuarioRepository usuarioRepository;
+    private UsuarioRepository usuarioRepository;
     @Autowired
-    HistoriaRepository historiaRepository;
+    private HistoriaRepository historiaRepository;
     @Autowired
-    ProgresoRepository progresoRepository;
+    private ProgresoRepository progresoRepository;
 
     public ProgresoDTO cargarPartida(int idUsuario){
         Progreso progreso = progresoRepository.findByUsuarioId(idUsuario);

@@ -9,8 +9,8 @@ import dev.lara.End.Game.repositories.UsuarioRepository;
 
 @Service
 public class RolService {
-    RolRepository repository;
-    UsuarioRepository usuarioRepository;
+    private RolRepository repository;
+    private UsuarioRepository usuarioRepository;
 
     public RolService(RolRepository repository, UsuarioRepository usuarioRepository) {
         this.repository = repository;
