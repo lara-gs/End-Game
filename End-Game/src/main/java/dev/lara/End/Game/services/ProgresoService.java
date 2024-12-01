@@ -28,6 +28,7 @@ public class ProgresoService {
     }
 
     public void borrarPartida(int idProgreso){
+        @SuppressWarnings("unused")
         Progreso progreso = progresoRepository.findById(idProgreso)
         .orElseThrow(() -> new RuntimeException("Progreso no encontrado con id " + idProgreso));
         progresoRepository.deleteById(idProgreso);

@@ -1,6 +1,6 @@
 package dev.lara.End.Game.models;
-import java.util.List;
 
+import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,16 +22,20 @@ public class Rol {
     @Column(name = "nombre_rol", nullable = false)
     private String nombreRol;
 
-    public Rol(){
+    public Rol() {
 
     }
-    
+
     public Rol(int id, String nombreRol) {
         this.id = id;
         this.nombreRol = nombreRol;
 
-        
     }
+
+    public Rol(String nombreRol) {
+        this.nombreRol = nombreRol;
+    }
+    
 
     public int getId() {
         return id;
@@ -41,7 +45,6 @@ public class Rol {
         this.id = id;
     }
 
-
     public String getNombreRol() {
         return nombreRol;
     }
@@ -50,5 +53,22 @@ public class Rol {
         this.nombreRol = nombreRol;
     }
 
-    
+    public List<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Rol rol = (Rol) obj;
+        return id == rol.id;
+    }
+
 }

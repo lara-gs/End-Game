@@ -13,7 +13,9 @@ import dev.lara.End.Game.repositories.ProgresoRepository;
 @Service
 public class HistoriaService {
     private HistoriaRepository historiaRepository;
+    @SuppressWarnings("unused")
     private OpcionesRepository opcionesRepository;
+    @SuppressWarnings("unused")
     private ProgresoRepository progresoRepository;
 
 

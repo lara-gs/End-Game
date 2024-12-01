@@ -10,6 +10,7 @@ import dev.lara.End.Game.repositories.UsuarioRepository;
 @Service
 public class RolService {
     private RolRepository repository;
+    @SuppressWarnings("unused")
     private UsuarioRepository usuarioRepository;
 
     public RolService(RolRepository repository, UsuarioRepository usuarioRepository) {
