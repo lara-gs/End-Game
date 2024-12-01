@@ -16,7 +16,7 @@ public class Usuario{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
-    private int idUsuario;
+    private Integer idUsuario;
 
     @ManyToOne 
     @JoinColumn(name = "id_rol", nullable = false)

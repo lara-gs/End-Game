@@ -18,7 +18,7 @@ public class AuthService {
     private final UsuarioRepository usuarioRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Value("${jwt.secret}") // Esta es la clave para la propiedad jwt.secret
+    @Value("${jwt.secret:#{environment.JWT_SECRET}}") // Esta es la clave para la propiedad jwt.secret
     private String jwtSecret;
 
     public AuthService(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder) {

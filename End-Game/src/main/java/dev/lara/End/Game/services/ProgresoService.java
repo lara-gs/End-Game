@@ -23,7 +23,7 @@ public class ProgresoService {
     private ProgresoRepository progresoRepository;
 
     public ProgresoDTO cargarPartida(int idUsuario){
-        Progreso progreso = progresoRepository.findByUsuarioId(idUsuario);
+        Progreso progreso = progresoRepository.findByUsuario_IdUsuario(idUsuario);
         return new ProgresoDTO(progreso);
     }
 
@@ -35,7 +35,7 @@ public class ProgresoService {
     }
 
     public ProgresoDTO guardarPartida(int idUsuario, int idHistoria){
-         Progreso progreso = progresoRepository.findByUsuarioId(idUsuario);
+         Progreso progreso = progresoRepository.findByUsuario_IdUsuario(idUsuario);
 
          Usuario usuario = usuarioRepository.findById(idUsuario)
          .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + idUsuario));

@@ -32,8 +32,7 @@ public class Progreso {
     public Progreso() {
     }
 
-    public Progreso(int idProgreso, Usuario usuario, Historia historia, LocalDate fecha) {
-        this.idProgreso = idProgreso;
+    public Progreso(Usuario usuario, Historia historia, LocalDate fecha) {
         this.usuario = usuario;
         this.historia = historia;
         this.fecha = fecha;

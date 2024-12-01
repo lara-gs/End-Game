@@ -1,6 +1,5 @@
 package dev.lara.End.Game.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,25 +16,21 @@ public class Opciones {
     private int idOpcion;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private Usuario usuario;
+    @JoinColumn(name = "id_historia_origen", nullable = false)
+    private Historia historiaOrigen;
 
-    @Column(name = "id_historia_origen", nullable = false)
-    private int idHistoriaOrigen;
-
-    @Column(name = "id_historia_destino", nullable = false)
-    private int idHistoriaDestino;
-
+    @ManyToOne
+    @JoinColumn(name = "id_historia_destino", nullable = false)
+    private Historia historiaDestino;
 
     
     public Opciones() {
     }
 
-    public Opciones(int id_progreso, Usuario usuario, int idHistoriaOrigen, int idHistoriaDestino) {
-        this.idOpcion = id_progreso;
-        this.usuario = usuario;
-        this.idHistoriaOrigen = idHistoriaOrigen;
-        this.idHistoriaDestino = idHistoriaDestino;
+    public Opciones(int idOpcion, Usuario usuario, Historia historiaOrigen, Historia historiaDestino) {
+        this.idOpcion = idOpcion;
+        this.historiaOrigen = historiaOrigen;
+        this.historiaDestino = historiaDestino;
     }
 
     public int getId_progreso() {
@@ -44,30 +39,22 @@ public class Opciones {
 
     public void setId_progreso(int id_progreso) {
         this.idOpcion = id_progreso;
+    }    
+
+    public Historia getHistoriaOrigen() {
+        return historiaOrigen;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public void setHistoriaOrigen(Historia historiaOrigen) {
+        this.historiaOrigen = historiaOrigen;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public Historia getHistoriaDestino() {
+        return historiaDestino;
     }
 
-    public int getIdHistoriaOrigen() {
-        return idHistoriaOrigen;
-    }
-
-    public void setIdHistoriaOrigen(int idHistoriaOrigen) {
-        this.idHistoriaOrigen = idHistoriaOrigen;
-    }
-
-    public int getIdHistoriaDestino() {
-        return idHistoriaDestino;
-    }
-
-    public void setIdHistoriaDestino(int idHistoriaDestino) {
-        this.idHistoriaDestino = idHistoriaDestino;
+    public void setHistoriaDestino(Historia historiaDestino) {
+        this.historiaDestino = historiaDestino;
     }
 
 }

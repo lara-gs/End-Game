@@ -21,9 +21,8 @@ public class OpcionesDTO {
 
     public OpcionesDTO(Opciones opciones) {
         this.idProgreso = opciones.getId_progreso();
-        this.idUsuario = opciones.getUsuario().getIdUsuario();
-        this.idHistoriaOrigen = opciones.getIdHistoriaOrigen();
-        this.idHistoriaDestino = opciones.getIdHistoriaDestino();
+        this.idHistoriaOrigen = opciones.getHistoriaOrigen().getIdHistoria();
+        this.idHistoriaDestino = opciones.getHistoriaDestino().getIdHistoria();
     }
 
     public int getIdProgreso() {
