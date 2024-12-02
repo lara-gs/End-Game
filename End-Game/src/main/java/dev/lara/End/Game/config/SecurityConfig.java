@@ -1,57 +1,63 @@
 package dev.lara.End.Game.config;
 
+import dev.lara.End.Game.models.Usuario;
+import dev.lara.End.Game.repositories.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import dev.lara.End.Game.services.UserDetailsServiceImpl;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-    private UserDetailsServiceImpl userDetailsService;
+    private final UsuarioRepository usuarioRepository;
 
+    public SecurityConfig(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
+
+    // Configuración de la cadena de filtros de seguridad
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para pruebas (habilitar en producción)
+                .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/admin/**").hasRole("ADMIN") // Rutas protegidas para ADMIN
+                                .requestMatchers("/player/**").hasRole("PLAYER") // Rutas protegidas para PLAYER
+                                .requestMatchers("/public/**").permitAll() // Rutas públicas
+                                .anyRequest().authenticated() // Otras rutas requieren autenticación
+                )
+                .httpBasic(withDefaults()); // Usar autenticación básica
+
+        return http.build();
+    }
+
+    // Codificador de contraseñas
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-   /*  @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(userDetailsService);
-    }*/
+    // Configuración de UserDetailsService para usar la base de datos
+@Bean
+public UserDetailsService userDetailsService() {
+    return username -> {
+        Usuario usuario = usuarioRepository.findByNombreUsuario(username);
+        if (usuario == null) {
+            throw new UsernameNotFoundException("Usuario no encontrado: " + username);
+        }
+        return org.springframework.security.core.userdetails.User.builder()
+            .username(usuario.getNombreUsuario())
+            .password(usuario.getPassword())
+            .roles(usuario.getRol().getNombreRol())
+            .build();
+    };
+}
 
-     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsServiceImpl userDetailsService) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.userDetailsService = userDetailsService;
-    }
-
-       @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userDetailsService);
-        return authenticationManagerBuilder.build();
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())  // Deshabilitar CSRF para APIs RESTful
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll()  // Acceso público a autenticación
-                .requestMatchers("/api/admin/**").hasRole("ADMIN")  // Solo accesible para ADMIN
-                .anyRequest().authenticated()  // El resto requiere autenticación
-            )
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);  // Filtro JWT
-
-        return http.build();
-    }
 }

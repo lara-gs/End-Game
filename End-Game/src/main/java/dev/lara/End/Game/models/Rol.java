@@ -50,8 +50,12 @@ public class Rol {
     }
 
     public void setNombreRol(String nombreRol) {
+        if (nombreRol == null || nombreRol.isEmpty()) {
+            throw new IllegalArgumentException("El nombre del rol no puede ser vacío");
+        }
         this.nombreRol = nombreRol;
     }
+    
 
     public List<Usuario> getUsuarios() {
         return usuarios;

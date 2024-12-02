@@ -4,62 +4,46 @@ import dev.lara.End.Game.models.Rol;
 import dev.lara.End.Game.models.Usuario;
 import dev.lara.End.Game.repositories.RolRepository;
 import dev.lara.End.Game.repositories.UsuarioRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
-import java.util.Optional;
+import jakarta.annotation.PostConstruct;
 
-@Component
-public class DataInitializer implements CommandLineRunner {
-
-    @Autowired
-    private RolRepository rolRepository;
+@Configuration
+public class DataInitializer {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
+    private RolRepository rolRepository;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Override
-    public void run(String... args) throws Exception {
-        // Crear roles iniciales
+    @PostConstruct
+    public void init() {
         if (rolRepository.count() == 0) {
             Rol adminRole = new Rol("ADMIN");
-            Rol userRole = new Rol("USER");
+            Rol playerRole = new Rol("PLAYER");
             rolRepository.save(adminRole);
-            rolRepository.save(userRole);
-        }
-
-        // Crear usuario ADMIN inicial
-        Optional<Usuario> adminUser = usuarioRepository.findByCorreo("admin@example.com");
-        if (adminUser.isEmpty()) {
-            Rol adminRole = rolRepository.findByNombreRol("ADMIN")
-                    .orElseThrow(() -> new RuntimeException("Rol ADMIN no encontrado"));
+            rolRepository.save(playerRole);
 
             Usuario admin = new Usuario();
             admin.setNombreUsuario("admin");
-            admin.setCorreo("admin@example.com");
+            admin.setCorreo("admin@game.com");
             admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRol(adminRole);
+
+            Usuario player = new Usuario();
+            player.setNombreUsuario("player1");
+            player.setCorreo("player1@game.com");
+            player.setPassword(passwordEncoder.encode("player123"));
+            player.setRol(playerRole);
+
             usuarioRepository.save(admin);
-        }
-
-        // Crear usuario USER inicial
-        Optional<Usuario> normalUser = usuarioRepository.findByCorreo("user@example.com");
-        if (normalUser.isEmpty()) {
-            Rol userRole = rolRepository.findByNombreRol("USER")
-                    .orElseThrow(() -> new RuntimeException("Rol USER no encontrado"));
-
-            Usuario user = new Usuario();
-            user.setNombreUsuario("user");
-            user.setCorreo("user@example.com");
-            user.setPassword(passwordEncoder.encode("user123"));
-            user.setRol(userRole);
-            usuarioRepository.save(user);
+            usuarioRepository.save(player);
         }
     }
 }
