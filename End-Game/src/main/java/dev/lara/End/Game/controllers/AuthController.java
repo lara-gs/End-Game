@@ -17,13 +17,13 @@ public class AuthController {
     @Autowired
     private AuthService authService;
 
-    // Endpoint para autenticar al usuario y devolver el token JWT
+    // Endpoint para autenticar al usuario
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-        // Llamamos al servicio de autenticación y obtenemos el token
-        String token = authService.authenticate(loginRequest.getCorreo(), loginRequest.getPassword());
-
-        // Devolvemos la respuesta con el token y el correo
-        return new LoginResponse(token, loginRequest.getCorreo());
+        System.out.println("login run method called");
+        // Llamamos al servicio de autenticación
+        String message = authService.authenticate(loginRequest.getCorreo(), loginRequest.getPassword());
+        System.out.println("login run message: " + message);
+        return new LoginResponse(message, loginRequest.getCorreo());
     }
 }
