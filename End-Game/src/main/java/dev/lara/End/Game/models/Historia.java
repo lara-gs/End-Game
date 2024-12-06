@@ -28,7 +28,7 @@ public class Historia {
     @OneToMany(mappedBy = "historiaDestino")
     private List<Opciones> opcionesDestino;
 
-    @Column(name = "descripcion", nullable = false)
+    @Column(name = "descripcion", nullable = false, columnDefinition = "TEXT")
     private String descripcion;
 
     public Historia() {

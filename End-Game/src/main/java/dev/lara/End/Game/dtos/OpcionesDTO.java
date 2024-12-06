@@ -7,16 +7,18 @@ public class OpcionesDTO {
     private int idUsuario;
     private int idHistoriaOrigen;
     private int idHistoriaDestino;
+    private String descripcion;
 
     public OpcionesDTO(){
 
     }
 
-    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoriaOrigen, int idHistoriaDestino) {
+    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoriaOrigen, int idHistoriaDestino, String descripcion) {
         this.idProgreso = idProgreso;
         this.idUsuario = idUsuario;
         this.idHistoriaOrigen = idHistoriaOrigen;
         this.idHistoriaDestino = idHistoriaDestino;
+        this.descripcion = descripcion;
     }
 
     public OpcionesDTO(Opciones opciones) {
@@ -56,5 +58,13 @@ public class OpcionesDTO {
     public void setIdHistoriaDestino(int idHistoriaDestino) {
         this.idHistoriaDestino = idHistoriaDestino;
     } 
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
     
 }

@@ -13,6 +13,7 @@ import dev.lara.End.Game.dtos.OpcionesDTO;
 import dev.lara.End.Game.services.OpcionesService;
 import dev.lara.End.Game.services.ProgresoService;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping(path ="/api/opciones")
 public class OpcionesController {

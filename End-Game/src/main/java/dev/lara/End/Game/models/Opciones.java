@@ -23,14 +23,18 @@ public class Opciones {
     @JoinColumn(name = "id_historia_destino", nullable = false)
     private Historia historiaDestino;
 
+    @JoinColumn(name = "descripcion", nullable = false, columnDefinition = "TEXT")
+    private String descripcion;
+
     
     public Opciones() {
     }
 
-    public Opciones(int idOpcion, Usuario usuario, Historia historiaOrigen, Historia historiaDestino) {
+    public Opciones(int idOpcion, Usuario usuario, Historia historiaOrigen, Historia historiaDestino, String descripcion) {
         this.idOpcion = idOpcion;
         this.historiaOrigen = historiaOrigen;
         this.historiaDestino = historiaDestino;
+        this.descripcion = descripcion;
     }
 
     public int getId_progreso() {
@@ -56,5 +60,14 @@ public class Opciones {
     public void setHistoriaDestino(Historia historiaDestino) {
         this.historiaDestino = historiaDestino;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
 
 }

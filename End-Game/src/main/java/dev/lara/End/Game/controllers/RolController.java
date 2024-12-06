@@ -22,7 +22,7 @@ public class RolController {
     }
 
      @GetMapping("/lista")
-    public ResponseEntity<List<RolDTO>> cargarOpciones(){
+    public ResponseEntity<List<RolDTO>> cargarRoles(){
         return new ResponseEntity<>(rolService.cargarRoles(), HttpStatus.OK);
     }
 }
