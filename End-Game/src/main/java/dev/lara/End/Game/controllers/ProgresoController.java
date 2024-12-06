@@ -25,9 +25,9 @@ public class ProgresoController {
         this.progresoService = progresoService;
     }
 
-    @GetMapping("/cargar/{IdPartida}")
-    public ResponseEntity<ProgresoDTO> cargarPartida(@PathVariable int IdPartida) {
-        return new ResponseEntity<>(progresoService.cargarPartida(IdPartida), HttpStatus.OK);
+    @GetMapping("/cargar/{idUsuario}")
+    public ResponseEntity<ProgresoDTO> cargarPartida(@PathVariable int idUsuario) {
+        return new ResponseEntity<>(progresoService.cargarPartida(idUsuario), HttpStatus.OK);
     }
 
     @DeleteMapping("/borrar/{IdPartida}")
@@ -36,7 +36,7 @@ public class ProgresoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
+    @PostMapping("/guardar")
     public ResponseEntity<ProgresoDTO> guardarPartida(@RequestBody ProgresoDTO progreso) {
         return new ResponseEntity<>(progresoService.guardarPartida(progreso.getIdUsuario(), progreso.getIdHistoria()),
                 HttpStatus.CREATED);

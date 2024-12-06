@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.lara.End.Game.dtos.OpcionesDTO;
 import dev.lara.End.Game.services.OpcionesService;
+import dev.lara.End.Game.services.ProgresoService;
 
 @RestController
 @RequestMapping(path ="/api/opciones")
 public class OpcionesController {
     OpcionesService opcionesService;
+
 
     public OpcionesController(OpcionesService opcionesService){
         this.opcionesService = opcionesService;

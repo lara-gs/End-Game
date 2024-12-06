@@ -32,7 +32,8 @@ public class SecurityConfig {
         http            
             .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para pruebas (habilitar en producción)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login").permitAll().requestMatchers("api/usuarios/public/registrar").permitAll() // Permitir acceso a todos en /public/registrar
+                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/usuarios/public/registrar").permitAll() // Permitir acceso a todos en /public/registrar
                 .requestMatchers("/player/**").permitAll() 
                 .anyRequest().authenticated() 
             )
