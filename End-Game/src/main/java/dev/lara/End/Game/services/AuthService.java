@@ -3,7 +3,6 @@ package dev.lara.End.Game.services;
 import dev.lara.End.Game.models.Usuario;
 import dev.lara.End.Game.repositories.UsuarioRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +10,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    @Autowired
+   
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
     private PasswordEncoder passwordEncoder;
+    
+
+
+    public AuthService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
 
     public String authenticate(String correo, String password) {

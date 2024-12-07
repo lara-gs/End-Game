@@ -1,6 +1,5 @@
 package dev.lara.End.Game.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,12 +13,21 @@ import dev.lara.End.Game.services.AuthService;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
+    
     private AuthService authService;
+    
+
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+
 
     // Endpoint para autenticar al usuario
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+
         System.out.println("login run method called");
         // Llamamos al servicio de autenticación
         String message = authService.authenticate(loginRequest.getCorreo(), loginRequest.getPassword());

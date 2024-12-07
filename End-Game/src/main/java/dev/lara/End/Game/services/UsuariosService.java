@@ -15,10 +15,16 @@ import dev.lara.End.Game.repositories.UsuarioRepository;
 @Service
 public class UsuariosService {
 
-    @Autowired
+ 
     private UsuarioRepository usuarioRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    
+
+    public UsuariosService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+        this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public UsuariosService(PasswordEncoder passwordEncoder){
         this.passwordEncoder = passwordEncoder;

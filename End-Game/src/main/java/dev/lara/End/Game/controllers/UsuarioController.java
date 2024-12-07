@@ -24,9 +24,10 @@ public class UsuarioController {
     UsuariosService usuariosService;
 
 
-    public UsuarioController(UsuariosService usuariosService, RolRepository rolRepository) {
+    public UsuarioController(UsuariosService usuariosService, RolRepository rolRepository, RolService rolService) {
         this.usuariosService = usuariosService;
         this.rolRepository = rolRepository;
+        this.rolService = rolService;
     }
 
     @DeleteMapping("/borrar/{IdUsuario}")

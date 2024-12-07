@@ -29,7 +29,7 @@ public class ProgresoController {
     public ResponseEntity<ProgresoDTO> cargarPartida(@PathVariable int idUsuario) {
         return new ResponseEntity<>(progresoService.cargarPartida(idUsuario), HttpStatus.OK);
     }
-
+    
     @DeleteMapping("/borrar/{IdPartida}")
     public ResponseEntity<Void> borrarPartida(@PathVariable int IdPartida) {
         progresoService.borrarPartida(IdPartida);

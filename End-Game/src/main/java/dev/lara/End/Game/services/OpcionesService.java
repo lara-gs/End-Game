@@ -12,7 +12,10 @@ import dev.lara.End.Game.repositories.ProgresoRepository;
 @SuppressWarnings("unused")
 @Service
 public class OpcionesService {
-    @Autowired
+    
+    public OpcionesService(OpcionesRepository opcionesRepository) {
+        this.opcionesRepository = opcionesRepository;
+    }
     private OpcionesRepository opcionesRepository;
     public List<OpcionesDTO> cargarOpciones(int idHistoria){
           return opcionesRepository.findAll().stream().map(opciones-> new OpcionesDTO(opciones)).toList();  

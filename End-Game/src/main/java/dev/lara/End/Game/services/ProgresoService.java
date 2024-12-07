@@ -2,7 +2,6 @@ package dev.lara.End.Game.services;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.lara.End.Game.dtos.ProgresoDTO;
@@ -15,12 +14,18 @@ import dev.lara.End.Game.repositories.UsuarioRepository;
 
 @Service
 public class ProgresoService {
-    @Autowired
+    
     private UsuarioRepository usuarioRepository;
-    @Autowired
     private HistoriaRepository historiaRepository;
-    @Autowired
     private ProgresoRepository progresoRepository;
+    
+
+    public ProgresoService(UsuarioRepository usuarioRepository, HistoriaRepository historiaRepository,
+            ProgresoRepository progresoRepository) {
+        this.usuarioRepository = usuarioRepository;
+        this.historiaRepository = historiaRepository;
+        this.progresoRepository = progresoRepository;
+    }
 
     public ProgresoDTO cargarPartida(int idUsuario){
         Progreso progreso = progresoRepository.findByUsuario_IdUsuario(idUsuario);
