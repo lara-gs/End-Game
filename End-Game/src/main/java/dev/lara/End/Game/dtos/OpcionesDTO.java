@@ -8,23 +8,32 @@ public class OpcionesDTO {
     private int idHistoriaOrigen;
     private int idHistoriaDestino;
     private String descripcion;
+    private boolean opcionEspecial;
+    private int idOpcionDesbloqueada;
 
     public OpcionesDTO(){
 
     }
 
-    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoriaOrigen, int idHistoriaDestino, String descripcion) {
+    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoriaOrigen, 
+    int idHistoriaDestino, String descripcion, boolean opcionEspecial, int idOpcionDesbloqueada) {
         this.idProgreso = idProgreso;
         this.idUsuario = idUsuario;
         this.idHistoriaOrigen = idHistoriaOrigen;
         this.idHistoriaDestino = idHistoriaDestino;
         this.descripcion = descripcion;
+        this.opcionEspecial = opcionEspecial;
+        this.idOpcionDesbloqueada = idOpcionDesbloqueada;
     }
 
     public OpcionesDTO(Opciones opciones) {
         this.idProgreso = opciones.getId_progreso();
         this.idHistoriaOrigen = opciones.getHistoriaOrigen().getIdHistoria();
         this.idHistoriaDestino = opciones.getHistoriaDestino().getIdHistoria();
+        this.descripcion = opciones.getDescripcion();
+        this.opcionEspecial = opciones.getOpcion_especial();
+        this.idOpcionDesbloqueada = opciones.getId_especial_desbloqueada();
+
     }
 
     public int getIdProgreso() {
@@ -66,5 +75,23 @@ public class OpcionesDTO {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public boolean getOpcionEspecial() {
+        return opcionEspecial;
+    }
+
+    public void setOpcionEspecial(boolean opcionEspecial) {
+        this.opcionEspecial = opcionEspecial;
+    }
+
+    public int getIdOpcionDesbloqueada() {
+        return idOpcionDesbloqueada;
+    }
+
+    public void setIdOpcionDesbloqueada(int idOpcionDesbloqueada) {
+        this.idOpcionDesbloqueada = idOpcionDesbloqueada;
+    }
+
+    
     
 }
