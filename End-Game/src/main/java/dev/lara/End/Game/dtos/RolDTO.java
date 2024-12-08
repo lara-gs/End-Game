@@ -35,6 +35,7 @@ public class RolDTO {
     public void setNombreRol(String nombreRol) {
         this.nombreRol = nombreRol;
     }
+    
 
     
 }

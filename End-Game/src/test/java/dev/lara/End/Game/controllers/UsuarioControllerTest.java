@@ -1,74 +1,75 @@
 package dev.lara.End.Game.controllers;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-
+import dev.lara.End.Game.dtos.RolDTO;
 import dev.lara.End.Game.dtos.UsuarioDTO;
 import dev.lara.End.Game.models.Rol;
 import dev.lara.End.Game.services.UsuariosService;
 import dev.lara.End.Game.repositories.RolRepository;
-
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 
-@WebMvcTest(UsuarioController.class)
-@ExtendWith(MockitoExtension.class)
-public class UsuarioControllerTest {
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-    @Autowired
+class UsuarioControllerTest {
+
     private MockMvc mockMvc;
 
-    @MockBean
+    @Mock
     private UsuariosService usuariosService;
 
-    @MockBean
+    @Mock
     private RolRepository rolRepository;
 
-    // Test para el método borrarPartida
-    @Test
-    void testBorrarPartida() throws Exception {
-        int idUsuario = 1; // Usuario de prueba
+    @InjectMocks
+    private UsuarioController usuarioController;
 
-        // Realizar la solicitud DELETE
-        mockMvc.perform(delete("/api/usuarios/borrar/{IdUsuario}", idUsuario))
-            .andExpect(status().isNoContent()); // Verificar que el código de estado sea 204 No Content
-
-        // Verificar que el servicio de usuarios haya sido llamado para borrar al usuario
-        verify(usuariosService).borrarUsuario(idUsuario);
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(usuarioController).build();
     }
 
-    // Test para el método registrarUsuario
     @Test
     void testRegistrarUsuario() throws Exception {
-        // Datos de prueba
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        Rol rol = new Rol(1, "USER"); // Simulando un rol con id 1 y nombre USER
+    
+        Rol rol = new Rol(1, "ADMIN");
+        when(rolRepository.findByNombreRol("ADMIN")).thenReturn(Optional.of(rol));
 
-        // Simulamos que el rol se encuentra en la base de datos
-        when(rolRepository.findByNombreRol("USER")).thenReturn(Optional.of(rol));
-        
-        // Simulamos la respuesta del servicio de usuarios
-        when(usuariosService.registrarUsuario("testUser", "test@user.com", "password", rol))
-            .thenReturn(usuarioDTO);
+        UsuarioDTO usuarioDTO = new UsuarioDTO(0, "juan", "juan@mail.com", new RolDTO(1, "ADMIN"), "password");
 
-        // Realizamos la solicitud POST y verificamos la respuesta
+        UsuarioDTO usuarioRegistrado = new UsuarioDTO(1, "juan", "juan@mail.com", new RolDTO(1, "ADMIN"), "password");
+        when(usuariosService.registrarUsuario(usuarioDTO.getNombreUsuario(), usuarioDTO.getCorreo(), usuarioDTO.getPassword(), rol))
+                .thenReturn(usuarioRegistrado);
+
         mockMvc.perform(post("/api/usuarios/public/registrar")
-                .contentType("application/json")
-                .content("{\"nombreUsuario\": \"testUser\", \"correo\": \"test@user.com\", \"password\": \"password\", \"rolNombre\": \"USER\"}"))
-            .andExpect(status().isOk()) // Verificamos que el estado sea 200 OK
-            .andExpect(jsonPath("$.nombreUsuario").value("testUser")) // Verificamos que el nombre de usuario sea el esperado
-            .andExpect(jsonPath("$.correo").value("test@user.com")); // Verificamos que el correo sea el esperado
+                        .contentType("application/json")
+                        .content("{ \"nombreUsuario\": \"juan\", \"correo\": \"juan@mail.com\", \"password\": \"password\", \"rolNombre\": \"ADMIN\" }"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nombreUsuario").value("juan"))
+                .andExpect(jsonPath("$.correo").value("juan@mail.com"))
+                .andExpect(jsonPath("$.rol.nombreRol").value("ADMIN"));
+
+        verify(rolRepository, times(1)).findByNombreRol("ADMIN");
+        verify(usuariosService, times(1)).registrarUsuario("juan", "juan@mail.com", "password", rol);
+    }
+
+    @Test
+    void testBorrarUsuario() throws Exception {
+       
+        doNothing().when(usuariosService).borrarUsuario(1);
+
+        mockMvc.perform(delete("/api/usuarios/borrar/1"))
+                .andExpect(status().isNoContent());
+
+        verify(usuariosService, times(1)).borrarUsuario(1);
     }
 }

@@ -36,8 +36,8 @@ public class OpcionesControllerTest {
     void testCargarOpciones() throws Exception {
         // Crear datos de prueba
         List<OpcionesDTO> opciones = Arrays.asList(
-            new OpcionesDTO(1, 1, 1, 2, "Opción 1"),
-            new OpcionesDTO(2, 1, 2, 3, "Opción 2")
+            new OpcionesDTO(1, 1, 1, 2, 0, "Opción 1"),
+            new OpcionesDTO(2, 1, 2, 3, 0, "Opción 2")
         );
 
         // Configurar el servicio mockeado

@@ -3,6 +3,7 @@ package dev.lara.End.Game.dtos;
 import dev.lara.End.Game.models.Opciones;
 
 public class OpcionesDTO {
+    private int idOpcion;
     private int idProgreso;
     private int idUsuario;
     private int idHistoriaOrigen;
@@ -13,7 +14,8 @@ public class OpcionesDTO {
 
     }
 
-    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoriaOrigen, int idHistoriaDestino, String descripcion) {
+    public OpcionesDTO(int idOpcion, int idProgreso, int idUsuario, int idHistoriaOrigen, int idHistoriaDestino, String descripcion) {
+        this.idOpcion = idOpcion;
         this.idProgreso = idProgreso;
         this.idUsuario = idUsuario;
         this.idHistoriaOrigen = idHistoriaOrigen;
@@ -22,10 +24,15 @@ public class OpcionesDTO {
     }
 
     public OpcionesDTO(Opciones opciones) {
+        this.idOpcion = opciones.getIdOpcion();
         this.idProgreso = opciones.getId_progreso();
-        this.idHistoriaOrigen = opciones.getHistoriaOrigen().getIdHistoria();
-        this.idHistoriaDestino = opciones.getHistoriaDestino().getIdHistoria();
+        this.idHistoriaOrigen = (opciones.getHistoriaOrigen() != null) ? opciones.getHistoriaOrigen().getIdHistoria() : -1; 
+        this.idHistoriaDestino = (opciones.getHistoriaDestino() != null) ? opciones.getHistoriaDestino().getIdHistoria() : -1;   
+        this.descripcion = opciones.getDescripcion();
     }
+    
+
+    
 
     public int getIdProgreso() {
         return idProgreso;
@@ -67,4 +74,11 @@ public class OpcionesDTO {
         this.descripcion = descripcion;
     }
     
+    public int getIdOpcion() {
+        return idOpcion;
+    }
+
+    public void setIdOpcion(int idOpcion) {
+        this.idOpcion = idOpcion;
+    }
 }

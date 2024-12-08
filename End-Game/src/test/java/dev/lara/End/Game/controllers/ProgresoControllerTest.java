@@ -1,48 +1,76 @@
 package dev.lara.End.Game.controllers;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import dev.lara.End.Game.dtos.ProgresoDTO;
+import dev.lara.End.Game.services.ProgresoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcAutoConfiguration;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-@WebMvcTest(ProgresoController.class)
-@Import({MockMvcAutoConfiguration.class}) // Asegura que la configuración de MockMvc se importe correctamente
-@EnableWebSecurity // Habilita la seguridad en los tests, si es necesario
-@WithMockUser(username = "testUser", roles = "USER") // Simula un usuario autenticado con un rol específico
-public class ProgresoControllerTest {
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-    @Autowired
+class ProgresoControllerTest {
+
     private MockMvc mockMvc;
 
-    // Test para cargarPartida (GET)
+    @Mock
+    private ProgresoService progresoService;
+
+    @InjectMocks
+    private ProgresoController progresoController;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(progresoController).build();
+    }
+
     @Test
     void testCargarPartida() throws Exception {
+     
+        ProgresoDTO progresoDTO = new ProgresoDTO(1, 1, 1, null);
+
+        when(progresoService.cargarPartida(1)).thenReturn(progresoDTO);
+
         mockMvc.perform(get("/api/progreso/cargar/1"))
-                .andExpect(status().isOk()); // Verifica que la respuesta sea 200 OK
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.idProgreso").value(1))
+                .andExpect(jsonPath("$.idUsuario").value(1));
+
+        verify(progresoService, times(1)).cargarPartida(1);
     }
 
-    // Test para borrarPartida (DELETE)
     @Test
     void testBorrarPartida() throws Exception {
+       
+        doNothing().when(progresoService).borrarPartida(1);
+
         mockMvc.perform(delete("/api/progreso/borrar/1"))
-                .andExpect(status().isNoContent()); // Verifica que la respuesta sea 204 No Content
+                .andExpect(status().isNoContent());
+        verify(progresoService, times(1)).borrarPartida(1);
     }
 
-    // Test para guardarPartida (POST)
     @Test
     void testGuardarPartida() throws Exception {
+        
+        ProgresoDTO progresoDTO = new ProgresoDTO(1, 1, 1, null);
+
+      
+        when(progresoService.guardarPartida(1, 1)).thenReturn(progresoDTO);
+
+        
         mockMvc.perform(post("/api/progreso/guardar")
-                .contentType("application/json")
-                .content("{\"idUsuario\": 1, \"idHistoria\": 1}"))
-                .andExpect(status().isCreated()); // Verifica que la respuesta sea 201 Created
+                        .contentType("application/json")
+                        .content("{ \"idUsuario\": 1, \"idHistoria\": 1 }"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.idProgreso").value(1))
+                .andExpect(jsonPath("$.idUsuario").value(1));
+
+        verify(progresoService, times(1)).guardarPartida(1, 1);
     }
 }

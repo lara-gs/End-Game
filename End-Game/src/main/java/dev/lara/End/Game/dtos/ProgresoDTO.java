@@ -22,11 +22,12 @@ public class ProgresoDTO {
     }
 
     public ProgresoDTO(Progreso progreso) {
-        this.idProgreso = progreso.getIdProgreso();
+        this.idProgreso = progreso.getIdProgreso();  
         this.idUsuario = progreso.getUsuario().getIdUsuario();
         this.idHistoria = progreso.getHistoria().getIdHistoria();
         this.fecha = progreso.getFecha();
     }
+    
 
     public int getIdProgreso() {
         return idProgreso;

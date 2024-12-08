@@ -69,5 +69,12 @@ public class Opciones {
         this.descripcion = descripcion;
     }
 
+    public int getIdOpcion() {
+        return idOpcion;
+    }
+
+    public void setIdOpcion(int idOpcion) {
+        this.idOpcion = idOpcion;
+    }   
 
 }

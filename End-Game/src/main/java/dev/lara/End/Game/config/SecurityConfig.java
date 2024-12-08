@@ -19,8 +19,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityConfig {
 
     @SuppressWarnings("unused")
-    private final UsuarioRepository usuarioRepository;
-    private final UserDetailsServiceImpl userDetailsService;
+    private  UsuarioRepository usuarioRepository;
+    private  UserDetailsServiceImpl userDetailsService;
 
     public SecurityConfig(UsuarioRepository usuarioRepository, UserDetailsServiceImpl userDetailsService) {
         this.usuarioRepository = usuarioRepository;
