@@ -21,10 +21,9 @@ public class UsuariosService {
 
     
 
-    public UsuariosService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder;
+    public UsuariosService() {
     }
+
 
     public UsuariosService(PasswordEncoder passwordEncoder){
         this.passwordEncoder = passwordEncoder;
