@@ -37,9 +37,9 @@ public class Juego {
                 rolController, userController);
     }
 
-    public void iniciarJuego() {
-        System.out.println(Constants.MENSAJE_BIENVENIDA);
-
+    public void iniciarJuego() {        
+        System.out.println(Constants.MENSAJE_ASCII_DIBUJO_CIUDAD);
+        System.out.println(Constants.MENSAJE_END_GAME_ASCII);
         loginORegistro();
     }
 
@@ -151,7 +151,6 @@ public class Juego {
 
     public void cargarHistorias() {
         historias = serviceManager.cargarHistorias();
-        System.out.println(Constants.MENSAJE_HISTORIAS_CARGADAS);
     }
 
     public void iniciarPartida() {
@@ -167,7 +166,6 @@ public class Juego {
                 historia = historias.stream().findFirst().orElse(null);
 
             } else {
-                motrarMensajeBienvenida();
                 historia = historias.stream().filter(h -> h.getIdHistoria() == progreso.getIdHistoria()).findFirst()
                         .orElse(null);
             }
@@ -186,19 +184,19 @@ public class Juego {
         gestionarFinPartida();
     }
 
-    private void motrarMensajeBienvenida() {
-        System.out.println(Constants.MENSAJE_BIENVENIDA_PARTIDA);
-    }
-
     @SuppressWarnings("resource")
     public void gestionarFinPartida() {
         try {
+            System.out.println("");
+            System.out.println(Constants.MENSAJE_ASCII_DIBUJO_CIUDAD);
+            System.out.println(Constants.MENSAJE_END_GAME_ASCII);
             Scanner scanner = new Scanner(System.in);
             System.out.println(Constants.MENSAJE_FIN_HISTORIA);
             System.out.println(Constants.MENSAJE_BORRAR_PARTIDA);
             String respuesta = scanner.nextLine();
             if (respuesta == Constants.MENSAJE_SI) {
                 serviceManager.borrarPartida(progreso.getIdProgreso());
+                inicializarJuego();
             } else {
                 System.out.println(Constants.MENSAJE_VOLVER_INICIO);
                 loginORegistro();

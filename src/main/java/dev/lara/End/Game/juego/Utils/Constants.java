@@ -5,7 +5,22 @@ public class Constants {
     public static final String ROL_ADMIN = "ADMIN";
     public static final String ROL_USER = "USER";
 
-    public static final String MENSAJE_BIENVENIDA = "Bienvenido a End Game";
+    public static final String MENSAJE_END_GAME_ASCII = "" +
+"     ______ __   _ ______        ______ _______ _______ _______" + "\r\n" +
+"    |______ | \\  | |     \\      |  ____ |_____| |  |  | |______" + "\r\n" +
+"    |______ |  \\_| |_____/      |_____| |     | |  |  | |______" + "\r\n" ;
+                                                               
+   ;
+    public static final String MENSAJE_ASCII_DIBUJO_CIUDAD = ""+
+        "                             .|\r\n" + //
+        "                             | |\r\n" + //
+        "                             |'|            ._____\r\n" + //
+        "                     ___    |  |            |.   |' .---\"|\r\n" + //
+        "             _    .-'   '-. |  |     .--'|  ||   | _|    |\r\n" + //
+        "          .-'|  _.|  |    ||   '-__  |   |  |    ||      |\r\n" + //
+        "          |' | |.    |    ||       | |   |  |    ||      |\r\n" + //
+        "       ___|  '-'     '    \"\"       '-'   '-.'    '`      |____\r\n" + //
+        "      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
     public static final String MENSAJE_BIENVENIDA_PARTIDA = "Mensaje fancy bienvenida";
 
     public static final String MENSAJE_LOGIN_REGISTER = "Desea iniciar sesion o registrarse?";
@@ -28,8 +43,6 @@ public class Constants {
     public static final String MENSAJE_ERROR_LOGIN = "Credenciales incorrectas";
 
     public static final String MENSAJE_ERROR_REGISTRO = "Error al registrar el usuario";
-
-    public static final String MENSAJE_HISTORIAS_CARGADAS = "Historias cargadas correctamente";
 
     public static final String MENSAJE_ELEGIR_OPCION = "Elija una opcion";
     public static final String MENSAJE_ERROR_ELEGIR_OPCION = "Error al elegir la opcion";
