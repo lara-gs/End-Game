@@ -15,19 +15,15 @@ import dev.lara.End.Game.services.HistoriaService;
 @RequestMapping(path = "/api/historia")
 public class HistoriaController {
 
-    
     HistoriaService historiaService;
-    
 
     public HistoriaController(HistoriaService historiaService) {
         this.historiaService = historiaService;
     }
 
-
     @GetMapping(path = "/historias")
-    public ResponseEntity<List<HistoriaDTO>> cargarHistoria(){
+    public ResponseEntity<List<HistoriaDTO>> cargarHistoria() {
         return new ResponseEntity<>(historiaService.cargarHistoria(), HttpStatus.OK);
     }
-
 
 }

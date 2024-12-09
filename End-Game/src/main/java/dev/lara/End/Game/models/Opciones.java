@@ -30,14 +30,13 @@ public class Opciones {
     private boolean opcion_especial;
 
     @JoinColumn(name = "id_especial_desbloqueada", nullable = true)
-    private int id_especial_desbloqueada;
+    private Integer id_especial_desbloqueada;
 
-    
     public Opciones() {
     }
 
     public Opciones(int idOpcion, Usuario usuario, Historia historiaOrigen,
-     Historia historiaDestino, String descripcion, boolean opcion_especial, int id_especial_desbloqueada) {
+            Historia historiaDestino, String descripcion, boolean opcion_especial, int id_especial_desbloqueada) {
         this.idOpcion = idOpcion;
         this.historiaOrigen = historiaOrigen;
         this.historiaDestino = historiaDestino;
@@ -52,7 +51,7 @@ public class Opciones {
 
     public void setId_progreso(int id_progreso) {
         this.idOpcion = id_progreso;
-    }    
+    }
 
     public Historia getHistoriaOrigen() {
         return historiaOrigen;
@@ -101,8 +100,5 @@ public class Opciones {
     public void setId_especial_desbloqueada(int id_especial_desbloqueada) {
         this.id_especial_desbloqueada = id_especial_desbloqueada;
     }
-
-    
-
 
 }

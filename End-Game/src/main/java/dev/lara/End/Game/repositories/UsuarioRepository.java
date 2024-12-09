@@ -9,7 +9,5 @@ import dev.lara.End.Game.models.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     Optional<Usuario> findByNombreUsuario(String nombreUsuario);
-
-
     Optional<Usuario> findByCorreo(String correo);
 }

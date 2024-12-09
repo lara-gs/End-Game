@@ -6,7 +6,7 @@ public class HistoriaDTO {
     private int idHistoria;
     private String descripcion;
 
-    public HistoriaDTO(){
+    public HistoriaDTO() {
 
     }
 
@@ -15,7 +15,7 @@ public class HistoriaDTO {
         this.descripcion = descripcion;
     }
 
-    public HistoriaDTO(Historia historia){
+    public HistoriaDTO(Historia historia) {
         this.idHistoria = historia.getIdHistoria();
         this.descripcion = historia.getDescripcion();
     }
@@ -36,5 +36,4 @@ public class HistoriaDTO {
         this.descripcion = descripcion;
     }
 
-    
 }

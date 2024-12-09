@@ -5,20 +5,22 @@ import java.time.LocalDate;
 import dev.lara.End.Game.models.Progreso;
 
 public class ProgresoDTO {
-    private int idProgreso;  
-    private int idUsuario;   
-    private int idHistoria; 
+    private int idProgreso;
+    private int idUsuario;
+    private int idHistoria;
     private LocalDate fecha;
+    private String historiasDesbloqueadas;
 
-    public ProgresoDTO(){
+    public ProgresoDTO() {
 
     }
 
-    public ProgresoDTO(int idProgreso, int idUsuario, int idHistoria, LocalDate fecha) {
+    public ProgresoDTO(int idProgreso, int idUsuario, int idHistoria, LocalDate fecha, String historiasDesbloqueadas) {
         this.idProgreso = idProgreso;
         this.idUsuario = idUsuario;
         this.idHistoria = idHistoria;
         this.fecha = fecha;
+        this.historiasDesbloqueadas = historiasDesbloqueadas;
     }
 
     public ProgresoDTO(Progreso progreso) {
@@ -26,6 +28,7 @@ public class ProgresoDTO {
         this.idUsuario = progreso.getUsuario().getIdUsuario();
         this.idHistoria = progreso.getHistoria().getIdHistoria();
         this.fecha = progreso.getFecha();
+        this.historiasDesbloqueadas = progreso.getHistoriasDesbloqueadas();
     }
 
     public int getIdProgreso() {
@@ -60,5 +63,12 @@ public class ProgresoDTO {
         this.fecha = fecha;
     }
 
-    
+    public String getHistoriasDesbloqueadas() {
+        return historiasDesbloqueadas;
+    }
+
+    public void setHistoriasDesbloqueadas(String historiasDesbloqueadas) {
+        this.historiasDesbloqueadas = historiasDesbloqueadas;
+    }
+
 }

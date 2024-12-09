@@ -14,11 +14,10 @@ import dev.lara.End.Game.repositories.UsuarioRepository;
 
 @Service
 public class ProgresoService {
-    
+
     private UsuarioRepository usuarioRepository;
     private HistoriaRepository historiaRepository;
     private ProgresoRepository progresoRepository;
-    
 
     public ProgresoService(UsuarioRepository usuarioRepository, HistoriaRepository historiaRepository,
             ProgresoRepository progresoRepository) {
@@ -27,36 +26,40 @@ public class ProgresoService {
         this.progresoRepository = progresoRepository;
     }
 
-    public ProgresoDTO cargarPartida(int idUsuario){
-        Progreso progreso = progresoRepository.findByUsuario_IdUsuario(idUsuario);
-        return new ProgresoDTO(progreso);
+    public ProgresoDTO cargarPartida(int idUsuario) {
+        try {
+            Progreso progreso = progresoRepository.findByUsuario_IdUsuario(idUsuario);
+
+            return new ProgresoDTO(progreso);
+        } catch (Exception e) {
+            return new ProgresoDTO();
+
+        }
     }
 
-    public void borrarPartida(int idProgreso){
+    public void borrarPartida(int idProgreso) {
         @SuppressWarnings("unused")
         Progreso progreso = progresoRepository.findById(idProgreso)
-        .orElseThrow(() -> new RuntimeException("Progreso no encontrado con id " + idProgreso));
+                .orElseThrow(() -> new RuntimeException("Progreso no encontrado con id " + idProgreso));
         progresoRepository.deleteById(idProgreso);
     }
 
-    public ProgresoDTO guardarPartida(int idUsuario, int idHistoria){
-         Progreso progreso = progresoRepository.findByUsuario_IdUsuario(idUsuario);
+    public ProgresoDTO guardarOActualizarPartida(int idUsuario, int idHistoria, String historiasDesbloqueadas) {
+        Progreso progreso = progresoRepository.findByUsuario_IdUsuario(idUsuario);
 
-         Usuario usuario = usuarioRepository.findById(idUsuario)
-         .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + idUsuario));
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + idUsuario));
 
         Historia historia = historiaRepository.findById(idHistoria)
-        .orElseThrow(() -> new RuntimeException("Historia no encontrado con id " + idHistoria));
+                .orElseThrow(() -> new RuntimeException("Historia no encontrado con id " + idHistoria));
 
         if (progreso == null) {
             progreso = new Progreso();
             progreso.setUsuario(usuario);
-            progreso.setHistoria(historia);
-            progreso.setFecha(LocalDate.now());
-        } else {
-            progreso.setHistoria(historia);
-            progreso.setFecha(LocalDate.now());
         }
+        progreso.setHistoriasDesbloqueadas(historiasDesbloqueadas);
+        progreso.setHistoria(historia);
+        progreso.setFecha(LocalDate.now());
 
         return new ProgresoDTO(progresoRepository.save(progreso));
     }

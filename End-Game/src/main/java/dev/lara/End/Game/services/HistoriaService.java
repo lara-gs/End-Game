@@ -9,7 +9,6 @@ import dev.lara.End.Game.repositories.HistoriaRepository;
 import dev.lara.End.Game.repositories.OpcionesRepository;
 import dev.lara.End.Game.repositories.ProgresoRepository;
 
-
 @Service
 public class HistoriaService {
     private HistoriaRepository historiaRepository;
@@ -18,7 +17,6 @@ public class HistoriaService {
     @SuppressWarnings("unused")
     private ProgresoRepository progresoRepository;
 
-
     public HistoriaService(HistoriaRepository repository, OpcionesRepository opcionesRepository,
             ProgresoRepository progresoRepository) {
         this.historiaRepository = repository;
@@ -26,9 +24,8 @@ public class HistoriaService {
         this.progresoRepository = progresoRepository;
     }
 
-    public List<HistoriaDTO> cargarHistoria(){
-       return historiaRepository.findAll().stream().map(historia -> 
-       new HistoriaDTO(historia)).toList();    
+    public List<HistoriaDTO> cargarHistoria() {
+        return historiaRepository.findAll().stream().map(historia -> new HistoriaDTO(historia)).toList();
     }
 
 }

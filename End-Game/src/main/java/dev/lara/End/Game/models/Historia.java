@@ -1,6 +1,5 @@
 package dev.lara.End.Game.models;
 
-
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -71,5 +70,4 @@ public class Historia {
         this.descripcion = descripcion;
     }
 
-   
 }

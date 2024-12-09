@@ -6,5 +6,5 @@ import dev.lara.End.Game.models.Progreso;
 
 public interface ProgresoRepository extends JpaRepository<Progreso, Integer>{
 
-    Progreso findByUsuario_IdUsuario(Integer usuarioId);  // Usar 'IdUsuario' en lugar de 'Id'
+    Progreso findByUsuario_IdUsuario(Integer usuarioId); 
 }

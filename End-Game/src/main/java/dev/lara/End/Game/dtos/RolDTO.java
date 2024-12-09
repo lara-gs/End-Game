@@ -6,7 +6,7 @@ public class RolDTO {
     private int id;
     private String nombreRol;
 
-    public RolDTO(){
+    public RolDTO() {
 
     }
 
@@ -36,5 +36,4 @@ public class RolDTO {
         this.nombreRol = nombreRol;
     }
 
-    
 }

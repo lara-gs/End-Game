@@ -35,7 +35,6 @@ public class Rol {
     public Rol(String nombreRol) {
         this.nombreRol = nombreRol;
     }
-    
 
     public int getId() {
         return id;
@@ -55,7 +54,6 @@ public class Rol {
         }
         this.nombreRol = nombreRol;
     }
-    
 
     public List<Usuario> getUsuarios() {
         return usuarios;

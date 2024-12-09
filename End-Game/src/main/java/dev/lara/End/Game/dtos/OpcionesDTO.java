@@ -3,20 +3,22 @@ package dev.lara.End.Game.dtos;
 import dev.lara.End.Game.models.Opciones;
 
 public class OpcionesDTO {
+    private int idOpcion;
     private int idProgreso;
     private int idUsuario;
     private int idHistoriaOrigen;
     private int idHistoriaDestino;
     private String descripcion;
     private boolean opcionEspecial;
-    private int idOpcionDesbloqueada;
+    private Integer idOpcionDesbloqueada;
 
-    public OpcionesDTO(){
+    public OpcionesDTO() {
 
     }
 
-    public OpcionesDTO(int idProgreso, int idUsuario, int idHistoriaOrigen, 
-    int idHistoriaDestino, String descripcion, boolean opcionEspecial, int idOpcionDesbloqueada) {
+    public OpcionesDTO(int idOpcion, int idProgreso, int idUsuario, int idHistoriaOrigen,
+            int idHistoriaDestino, String descripcion, boolean opcionEspecial, int idOpcionDesbloqueada) {
+        this.idOpcion = idOpcion;
         this.idProgreso = idProgreso;
         this.idUsuario = idUsuario;
         this.idHistoriaOrigen = idHistoriaOrigen;
@@ -33,6 +35,7 @@ public class OpcionesDTO {
         this.descripcion = opciones.getDescripcion();
         this.opcionEspecial = opciones.getOpcion_especial();
         this.idOpcionDesbloqueada = opciones.getId_especial_desbloqueada();
+        this.idOpcion = opciones.getIdOpcion();
 
     }
 
@@ -66,7 +69,7 @@ public class OpcionesDTO {
 
     public void setIdHistoriaDestino(int idHistoriaDestino) {
         this.idHistoriaDestino = idHistoriaDestino;
-    } 
+    }
 
     public String getDescripcion() {
         return descripcion;
@@ -92,6 +95,8 @@ public class OpcionesDTO {
         this.idOpcionDesbloqueada = idOpcionDesbloqueada;
     }
 
-    
-    
+    public int getIdOpcion() {
+        return idOpcion;
+    }
+
 }
