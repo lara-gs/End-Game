@@ -98,5 +98,8 @@ public class OpcionesDTO {
     public int getIdOpcion() {
         return idOpcion;
     }
-
+ 
+    public void setIdOpcion(int idOpcion) {
+        this.idOpcion = idOpcion;
+    }
 }

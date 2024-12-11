@@ -14,7 +14,7 @@ import dev.lara.End.Game.services.AuthService;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
-
+    
     private AuthService authService;
 
     public AuthController(AuthService authService) {

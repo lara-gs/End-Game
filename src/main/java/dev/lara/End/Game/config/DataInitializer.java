@@ -27,7 +27,7 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    final static Logger logger = LoggerFactory.getLogger(DataInitializer.class);
+    static Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
     @Override
     @Transactional

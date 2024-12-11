@@ -4,7 +4,7 @@ public class LoginRequest {
     private String correo;
     private String password;
 
-    // Getters and setters
+
     public String getCorreo() {
         return correo;
     }
@@ -19,5 +19,9 @@ public class LoginRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void getEmail(String string) {
+        throw new UnsupportedOperationException("Unimplemented method 'getEmail'");
     }
 }

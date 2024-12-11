@@ -21,13 +21,15 @@ public class UsuariosService {
     public UsuariosService() {
     }
 
-    public UsuariosService(PasswordEncoder passwordEncoder) {
+    public UsuariosService(UsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
+        this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
 
     }
 
     public UsuarioDTO registrarUsuario(String nombreUsuario, String correo, String password, Rol rol) {
         Usuario usuario = new Usuario();
+        usuario.setIdUsuario(0);
         usuario.setNombreUsuario(nombreUsuario);
         usuario.setCorreo(correo);
         usuario.setPassword(passwordEncoder.encode(password));
@@ -35,7 +37,7 @@ public class UsuariosService {
 
         Usuario usuarioGuardado = usuarioRepository.save(usuario);
 
-        // Crear el DTO con el RolDTO
+    
         RolDTO rolDTO = new RolDTO(usuarioGuardado.getRol());
         UsuarioDTO usuarioDTO = new UsuarioDTO(0, usuarioGuardado.getNombreUsuario(), usuarioGuardado.getCorreo(),
                 rolDTO, password);
