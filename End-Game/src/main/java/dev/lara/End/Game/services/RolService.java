@@ -1,4 +1,5 @@
 package dev.lara.End.Game.services;
+
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -18,11 +19,7 @@ public class RolService {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<RolDTO> cargarRoles(){
-        return repository.findAll().stream().map(Rol-> new RolDTO(Rol)).toList();       
+    public List<RolDTO> cargarRoles() {
+        return repository.findAll().stream().map(Rol -> new RolDTO(Rol)).toList();
     }
 }
-
-
-    
-

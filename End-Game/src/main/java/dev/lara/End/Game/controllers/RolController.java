@@ -12,17 +12,17 @@ import dev.lara.End.Game.dtos.RolDTO;
 import dev.lara.End.Game.services.RolService;
 
 @RestController
-@RequestMapping(path ="/api/roles")
+@RequestMapping(path = "/api/roles")
 public class RolController {
 
     RolService rolService;
 
-    public RolController(RolService rolService){
+    public RolController(RolService rolService) {
         this.rolService = rolService;
     }
 
-     @GetMapping("/lista")
-    public ResponseEntity<List<RolDTO>> cargarRoles(){
+    @GetMapping("/lista")
+    public ResponseEntity<List<RolDTO>> cargarRoles() {
         return new ResponseEntity<>(rolService.cargarRoles(), HttpStatus.OK);
     }
 }

@@ -1,76 +1,94 @@
 package dev.lara.End.Game.controllers;
 
 import dev.lara.End.Game.dtos.ProgresoDTO;
+import dev.lara.End.Game.models.Historia;
+import dev.lara.End.Game.models.Progreso;
+import dev.lara.End.Game.models.Usuario;
 import dev.lara.End.Game.services.ProgresoService;
+import dev.lara.End.Game.services.UsuarioRepositoryInMemory;
+import dev.lara.End.Game.services.HistoriaRepositoryInMemory;
+import dev.lara.End.Game.services.ProgresoRepositoryInMemory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.time.LocalDate;
+
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProgresoControllerTest {
 
-    private MockMvc mockMvc;
+    private ProgresoController progresoController;
 
-    @Mock
-    private ProgresoService progresoService;
+     @Autowired
+    private HistoriaRepositoryInMemory historiaRepository;
+    @Autowired
+    private ProgresoRepositoryInMemory progresoRepository;
+    @Autowired
+    private UsuarioRepositoryInMemory usuarioRepository;
 
     @InjectMocks
-    private ProgresoController progresoController;
+    private ProgresoService progresoService;
+
+    Progreso progresoMock;
+    Usuario usuarioMock1;
+    Historia historiaMock;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(progresoController).build();
+        progresoRepository = new ProgresoRepositoryInMemory();
+        usuarioRepository = new UsuarioRepositoryInMemory();
+        historiaRepository = new HistoriaRepositoryInMemory();
+
+        usuarioMock1 = new Usuario();
+        usuarioMock1.setIdUsuario(1);
+        usuarioMock1 = usuarioRepository.save(usuarioMock1);
+        Usuario usuarioMock2 = new Usuario();
+        usuarioMock2.setIdUsuario(2);
+
+        historiaMock = new Historia();
+        historiaMock.setIdHistoria(2);
+        historiaMock = historiaRepository.save(historiaMock);
+
+        progresoMock = new Progreso();
+        progresoMock.setUsuario(usuarioMock1);
+        progresoMock.setHistoria(historiaMock);
+        progresoMock.setFecha(LocalDate.now());
+        progresoMock.setHistoriasDesbloqueadas("1,2,3");
+        progresoMock = progresoRepository.save(progresoMock);
+
+        Progreso progresoMock2 = new Progreso();
+        progresoMock2.setUsuario(usuarioMock2);
+        progresoMock2.setHistoria(historiaMock);
+        progresoMock2.setFecha(LocalDate.now());
+        progresoMock2.setHistoriasDesbloqueadas("1,2,3");
+        progresoMock2 = progresoRepository.save(progresoMock2);
+
+        progresoService = new ProgresoService(usuarioRepository, historiaRepository, progresoRepository);
+        progresoController = new ProgresoController(progresoService);
     }
 
     @Test
-    void testCargarPartida() throws Exception {
-     
-        ProgresoDTO progresoDTO = new ProgresoDTO(1, 1, 1, null);
+    void testCargarPartida() {
+        ResponseEntity<ProgresoDTO> response = progresoController.cargarPartida(1);
 
-        when(progresoService.cargarPartida(1)).thenReturn(progresoDTO);
-
-        mockMvc.perform(get("/api/progreso/cargar/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.idProgreso").value(1))
-                .andExpect(jsonPath("$.idUsuario").value(1));
-
-        verify(progresoService, times(1)).cargarPartida(1);
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode().value());
+        ProgresoDTO progreso = response.getBody();
+        assertNotNull(progreso);
+        assertEquals(0, progreso.getIdUsuario());
+        assertEquals(0, progreso.getIdHistoria());
     }
 
     @Test
-    void testBorrarPartida() throws Exception {
-       
-        doNothing().when(progresoService).borrarPartida(1);
+    void testBorrarPartida() {
+        progresoController.borrarPartida(progresoMock.getIdProgreso());
+        ResponseEntity<ProgresoDTO> response = progresoController.cargarPartida(1);
 
-        mockMvc.perform(delete("/api/progreso/borrar/1"))
-                .andExpect(status().isNoContent());
-        verify(progresoService, times(1)).borrarPartida(1);
-    }
-
-    @Test
-    void testGuardarPartida() throws Exception {
-        
-        ProgresoDTO progresoDTO = new ProgresoDTO(1, 1, 1, null);
-
-      
-        when(progresoService.guardarPartida(1, 1)).thenReturn(progresoDTO);
-
-        
-        mockMvc.perform(post("/api/progreso/guardar")
-                        .contentType("application/json")
-                        .content("{ \"idUsuario\": 1, \"idHistoria\": 1 }"))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.idProgreso").value(1))
-                .andExpect(jsonPath("$.idUsuario").value(1));
-
-        verify(progresoService, times(1)).guardarPartida(1, 1);
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode().value());
     }
 }

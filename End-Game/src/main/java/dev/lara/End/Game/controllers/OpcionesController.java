@@ -15,17 +15,16 @@ import dev.lara.End.Game.services.ProgresoService;
 
 @SuppressWarnings("unused")
 @RestController
-@RequestMapping(path ="/api/opciones")
+@RequestMapping(path = "/api/opciones")
 public class OpcionesController {
     OpcionesService opcionesService;
 
-
-    public OpcionesController(OpcionesService opcionesService){
+    public OpcionesController(OpcionesService opcionesService) {
         this.opcionesService = opcionesService;
     }
 
     @GetMapping("/{historiaId}")
-    public ResponseEntity<List<OpcionesDTO>> cargarOpciones(@PathVariable int historiaId){
+    public ResponseEntity<List<OpcionesDTO>> cargarOpciones(@PathVariable int historiaId) {
         return new ResponseEntity<>(opcionesService.cargarOpciones(historiaId), HttpStatus.OK);
     }
 

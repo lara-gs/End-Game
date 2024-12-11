@@ -1,157 +1,188 @@
 package dev.lara.End.Game.models;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 class RolTest {
 
     private Rol rol;
+    private List<Usuario> usuarios;
 
     @BeforeEach
     void setUp() {
-        rol = new Rol(1, "Administrador");
-    }
 
-    @Test
-    void testConstructorConIdYNombreRol() {
-        assertEquals(1, rol.getId());
-        assertEquals("Administrador", rol.getNombreRol());
+        usuarios = new ArrayList<>();
+        rol = new Rol("Admin");
     }
 
     @Test
     void testConstructorConNombreRol() {
-        Rol rolSinId = new Rol("Usuario");
-        assertEquals("Usuario", rolSinId.getNombreRol());
-        assertEquals(0, rolSinId.getId());
+        assertEquals("Admin", rol.getNombreRol());
     }
 
     @Test
-    void testSetId() {
-        rol.setId(5);
-        assertEquals(5, rol.getId());
+    void testConstructorConIdYNombreRol() {
+        rol.setId(1);
+        rol.setNombreRol("User");
+        assertEquals(1, rol.getId());
+        assertEquals("User", rol.getNombreRol());
     }
 
     @Test
     void testSetNombreRolValido() {
-        rol.setNombreRol("Editor");
-        assertEquals("Editor", rol.getNombreRol());
+        rol.setNombreRol("Moderador");
+        assertEquals("Moderador", rol.getNombreRol());
     }
 
     @Test
     void testSetNombreRolNulo() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> rol.setNombreRol(null));
-        assertEquals("El nombre del rol no puede ser vacío", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> {
+            rol.setNombreRol(null);
+        });
     }
 
     @Test
     void testSetNombreRolVacio() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> rol.setNombreRol(""));
-        assertEquals("El nombre del rol no puede ser vacío", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> {
+            rol.setNombreRol("");
+        });
     }
 
     @Test
-    void testGetUsuarios() {
-        Usuario usuario1 = new Usuario();
-        usuario1.setIdUsuario(1);
-        usuario1.setNombreUsuario("Lara");
-
-        Usuario usuario2 = new Usuario();
-        usuario2.setIdUsuario(2);
-        usuario2.setNombreUsuario("Taylor");
-
-        List<Usuario> usuarios = Arrays.asList(usuario1, usuario2);
+    void testSetUsuarios() {
+        Usuario usuario = new Usuario(1, rol, "user1", "user1@example.com", "password");
+        usuarios.add(usuario);
         rol.setUsuarios(usuarios);
-
-        assertNotNull(rol.getUsuarios());
-        assertEquals(2, rol.getUsuarios().size());
-        assertEquals("Lara", rol.getUsuarios().get(0).getNombreUsuario());
-        assertEquals("Taylor", rol.getUsuarios().get(1).getNombreUsuario());
+        assertEquals(1, rol.getUsuarios().size());
+        assertEquals(usuario, rol.getUsuarios().get(0));
     }
 
     @Test
-    void testSetUsuariosNulo() {
-        rol.setUsuarios(null);
+    void testEquals() {
+        Rol rol2 = new Rol("Admin");
+        rol2.setId(rol.getId());
+        assertTrue(rol.equals(rol2));
+
+        Rol rol3 = new Rol("User");
+        rol3.setId(2);
+        assertFalse(rol.equals(rol3));
+    }
+
+    @Test
+    void testEqualsSameId() {
+        Rol rol2 = new Rol("Admin");
+        rol2.setId(rol.getId());
+        assertTrue(rol.equals(rol2));
+    }
+
+    @Test
+    void testUsuariosPorDefecto() {
         assertNull(rol.getUsuarios());
     }
 
     @Test
-    void testEqualsMismoObjeto() {
-        assertTrue(rol.equals(rol));
+    void testSetGetId() {
+        rol.setId(2);
+        assertEquals(2, rol.getId());
     }
 
     @Test
-    void testEqualsOtroObjetoConMismoId() {
-        Rol otroRol = new Rol(1, "Cualquier Nombre");
-        assertTrue(rol.equals(otroRol));
+    void testConstructorPorDefecto() {
+        Rol rolDefault = new Rol();
+        assertNotNull(rolDefault);
+    }
+    @Test
+    void testSetNombreRolNull() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            rol.setNombreRol(null);
+        });
     }
 
     @Test
-    void testEqualsOtroObjetoConDiferenteId() {
-        Rol otroRol = new Rol(2, "Cualquier Nombre");
-        assertFalse(rol.equals(otroRol));
+    void testSetNombreRolEmpty() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            rol.setNombreRol("");
+        });
     }
 
     @Test
-    void testEqualsObjetoNulo() {
-        assertFalse(rol.equals(null));
-    }
-
-    @SuppressWarnings("unlikely-arg-type")
-    @Test
-    void testEqualsDiferenteClase() {
-        assertFalse(rol.equals("String"));
+    void testSetUsuariosCorrectamente() {
+        Usuario usuario = new Usuario(1, rol, "user1", "user1@example.com", "password");
+        usuarios.add(usuario);
+        rol.setUsuarios(usuarios);
+        assertEquals(1, rol.getUsuarios().size());
+        assertEquals(usuario, rol.getUsuarios().get(0));
     }
 
     @Test
-    void testConstructorConUsuariosVacios() {
-        Rol rolSinUsuarios = new Rol(1, "Invitado");
+    void testSetGetNombreRol() {
+        rol.setNombreRol("User");
+        assertEquals("User", rol.getNombreRol());
+    }
+
+    @Test
+    void testUsuariosVaciosPorDefecto() {
+        assertNull(rol.getUsuarios());
+    }
+
+    @Test
+    void testEqualsDiferenteObjeto() {
+        Rol rol2 = new Rol("Guest");
+        rol2.setId(2);
+        assertFalse(rol.equals(rol2));
+    }
+
+
+    @Test
+    void testRolSinUsuarios() {
+        Rol rolSinUsuarios = new Rol("ADMIN");
+        assertEquals("ADMIN", rolSinUsuarios.getNombreRol());
         assertNull(rolSinUsuarios.getUsuarios());
     }
 
     @Test
-    void testSetUsuariosListaVacia() {
-        rol.setUsuarios(List.of());
-        assertTrue(rol.getUsuarios().isEmpty());
+    void testRolConNombreYSinUsuarios() {
+        Rol rolConNombre = new Rol("Admin");
+        assertEquals("Admin", rolConNombre.getNombreRol());
+        assertNull(rolConNombre.getUsuarios());
+    }
+    @Test
+    void testSetIdConValorNegativo() {
+        rol.setId(-1);
+        assertEquals(-1, rol.getId());
     }
 
     @Test
-    void testEqualsMismoIdUsuariosDiferentes() {
-        Rol otroRol = new Rol(1, "Diferente Nombre");
-        Usuario usuario = new Usuario();
-        usuario.setIdUsuario(3);
-        otroRol.setUsuarios(List.of(usuario));
-
-        assertTrue(rol.equals(otroRol));
+    void testSetUsuariosConListaVacia() {
+        rol.setUsuarios(new ArrayList<>());
+        assertEquals(0, rol.getUsuarios().size());
     }
 
     @Test
-    void testSetNombreRolLargo() {
-        String nombreLargo = "Administrador".repeat(100);
-        rol.setNombreRol(nombreLargo);
-        assertEquals(nombreLargo, rol.getNombreRol());
+    void testEqualsConObjetoNulo() {
+        assertFalse(rol.equals(null));
+
     }
-
     @Test
-    void testSetUsuariosMismaLista() {
-        Usuario usuario1 = new Usuario();
-        usuario1.setIdUsuario(1);
-
-        List<Usuario> usuarios = Arrays.asList(usuario1, usuario1);
+    void testSetUsuariosConVariosUsuarios() {
+        Usuario usuario1 = new Usuario(1, rol, "user1", "user1@example.com", "password");
+        Usuario usuario2 = new Usuario(2, rol, "user2", "user2@example.com", "password");
+        usuarios.add(usuario1);
+        usuarios.add(usuario2);
         rol.setUsuarios(usuarios);
-
-        assertEquals(usuarios, rol.getUsuarios());
+        assertEquals(2, rol.getUsuarios().size());
+        assertTrue(rol.getUsuarios().contains(usuario1));
+        assertTrue(rol.getUsuarios().contains(usuario2));
     }
-
+ 
     @Test
-    void testEqualsUsuariosNoInicializados() {
-        Rol otroRol = new Rol(1, "Administrador");
-        assertTrue(rol.equals(otroRol));
+    void testSetIdConCero() {
+        rol.setId(0);
+        assertEquals(0, rol.getId());
     }
 
-   
 }

@@ -1,152 +1,95 @@
 package dev.lara.End.Game.models;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import java.time.LocalDate;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import java.time.LocalDate;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProgresoTest {
 
-    private Progreso progreso;
     private Usuario usuario;
     private Historia historia;
-    private LocalDate fecha;
+    private Progreso progreso;
 
     @BeforeEach
     void setUp() {
-        usuario = new Usuario();
-        usuario.setIdUsuario(1);
-        usuario.setNombreUsuario("Lara");
-
-        historia = new Historia(1, "Historia de prueba");
-
-        fecha = LocalDate.of(2024, 12, 7);
-
-        progreso = new Progreso(usuario, historia, fecha);
+       
+        usuario = new Usuario(1, null, "usuario1", "usuario1@example.com", "password");
+        historia = new Historia(1, "Historia inicial");
+        progreso = new Progreso(usuario, historia, LocalDate.of(2024, 12, 10), "Historia 1 desbloqueada");
     }
 
     @Test
     void testConstructor() {
-        assertNotNull(progreso);
+        assertEquals(0, progreso.getIdProgreso());
         assertEquals(usuario, progreso.getUsuario());
         assertEquals(historia, progreso.getHistoria());
-        assertEquals(fecha, progreso.getFecha());
+        assertEquals(LocalDate.of(2024, 12, 10), progreso.getFecha());
+        assertEquals("Historia 1 desbloqueada", progreso.getHistoriasDesbloqueadas());
     }
 
     @Test
     void testSettersAndGetters() {
-        Usuario nuevoUsuario = new Usuario();
-        nuevoUsuario.setIdUsuario(2);
-        nuevoUsuario.setNombreUsuario("Otro Usuario");
+        progreso.setIdProgreso(2);
+        progreso.setUsuario(new Usuario(2, null, "usuario2", "usuario2@example.com", "newpassword"));
+        progreso.setHistoria(new Historia(2, "Historia 2"));
+        progreso.setFecha(LocalDate.of(2024, 12, 12));
+        progreso.setHistoriasDesbloqueadas("Historia 2 desbloqueada");
 
-        Historia nuevaHistoria = new Historia(2, "Otra historia de prueba");
-        LocalDate nuevaFecha = LocalDate.of(2025, 1, 1);
-
-        progreso.setUsuario(nuevoUsuario);
-        progreso.setHistoria(nuevaHistoria);
-        progreso.setFecha(nuevaFecha);
-        progreso.setIdProgreso(10);
-
-        assertEquals(nuevoUsuario, progreso.getUsuario());
-        assertEquals(nuevaHistoria, progreso.getHistoria());
-        assertEquals(nuevaFecha, progreso.getFecha());
-        assertEquals(10, progreso.getIdProgreso());
+        assertEquals(2, progreso.getIdProgreso());
+        assertEquals("Historia 2", progreso.getHistoria().getDescripcion());
+        assertEquals(LocalDate.of(2024, 12, 12), progreso.getFecha());
+        assertEquals("Historia 2 desbloqueada", progreso.getHistoriasDesbloqueadas());
     }
 
     @Test
-    void testIdProgreso() {
-        progreso.setIdProgreso(5);
-        assertEquals(5, progreso.getIdProgreso());
-    }
-
-    @Test
-    void testUsuarioNull() {
-        progreso.setUsuario(null);
-        assertNull(progreso.getUsuario());
-    }
-
-    @Test
-    void testHistoriaNull() {
-        progreso.setHistoria(null);
-        assertNull(progreso.getHistoria());
-    }
-
-    @Test
-    void testFechaNull() {
+    void testSetFechaNull() {
         progreso.setFecha(null);
         assertNull(progreso.getFecha());
     }
 
     @Test
-    void testFechaValida() {
-        LocalDate nuevaFecha = LocalDate.of(2023, 5, 15);
-        progreso.setFecha(nuevaFecha);
-        assertEquals(nuevaFecha, progreso.getFecha());
+    void testSetHistoriasDesbloqueadasNull() {
+        progreso.setHistoriasDesbloqueadas(null);
+        assertNull(progreso.getHistoriasDesbloqueadas());
     }
 
     @Test
-void testConstructorWithNullValues() {
-    Progreso progresoNulo = new Progreso(null, null, null);
+    void testSetHistoriasDesbloqueadasEmpty() {
+        progreso.setHistoriasDesbloqueadas("");
+        assertEquals("", progreso.getHistoriasDesbloqueadas());
+    }
 
-    assertNull(progresoNulo.getUsuario());
-    assertNull(progresoNulo.getHistoria());
-    assertNull(progresoNulo.getFecha());
-}
+    @Test
+    void testModificarProgreso() {
+        progreso.setFecha(LocalDate.of(2024, 12, 15));
+        progreso.setHistoriasDesbloqueadas("Historia 3 desbloqueada");
 
-@Test
-void testSetFechaConFechaPasada() {
-    LocalDate fechaPasada = LocalDate.of(2000, 1, 1);
-    progreso.setFecha(fechaPasada);
+        assertEquals(LocalDate.of(2024, 12, 15), progreso.getFecha());
+        assertEquals("Historia 3 desbloqueada", progreso.getHistoriasDesbloqueadas());
+    }
 
-    assertEquals(fechaPasada, progreso.getFecha());
-}
+    @Test
+    void testSetUsuarioNull() {
+        progreso.setUsuario(null);
+        assertNull(progreso.getUsuario());
+    }
 
-@Test
-void testSetFechaConFechaFutura() {
-    LocalDate fechaFutura = LocalDate.of(2050, 1, 1);
-    progreso.setFecha(fechaFutura);
+    @Test
+    void testSetHistoriaNull() {
+        progreso.setHistoria(null);
+        assertNull(progreso.getHistoria());
+    }
 
-    assertEquals(fechaFutura, progreso.getFecha());
-}
+    @Test
+    void testRelacionUsuarioHistoria() {
+        assertEquals(usuario, progreso.getUsuario());
+        assertEquals(historia, progreso.getHistoria());
+    }
 
-@Test
-void testUsuarioConDatosParciales() {
-    Usuario usuarioParcial = new Usuario();
-    usuarioParcial.setIdUsuario(99);
-
-    progreso.setUsuario(usuarioParcial);
-
-    assertEquals(99, progreso.getUsuario().getIdUsuario());
-    assertNull(progreso.getUsuario().getNombreUsuario());
-}
-
-@Test
-void testHistoriaConDatosParciales() {
-    Historia historiaParcial = new Historia();
-    historiaParcial.setIdHistoria(50);
-
-    progreso.setHistoria(historiaParcial);
-
-    assertEquals(50, progreso.getHistoria().getIdHistoria());
-    assertNull(progreso.getHistoria().getDescripcion());
-}
-
-@Test
-void testSetIdProgresoNegativo() {
-    progreso.setIdProgreso(-1);
-
-    assertEquals(-1, progreso.getIdProgreso());
-}
-
-@Test
-void testSetFechaHoy() {
-    LocalDate hoy = LocalDate.now();
-    progreso.setFecha(hoy);
-
-    assertEquals(hoy, progreso.getFecha());
-}
-
-
+    @Test
+    void testConstructorDefault() {
+        Progreso progresoDefault = new Progreso();
+        assertNotNull(progresoDefault);
+    }
 }

@@ -14,7 +14,6 @@ import dev.lara.End.Game.dtos.ProgresoDTO;
 
 import dev.lara.End.Game.services.ProgresoService;
 
-
 @RestController
 @RequestMapping(path = "/api/progreso")
 public class ProgresoController {
@@ -38,7 +37,9 @@ public class ProgresoController {
 
     @PostMapping("/guardar")
     public ResponseEntity<ProgresoDTO> guardarPartida(@RequestBody ProgresoDTO progreso) {
-        return new ResponseEntity<>(progresoService.guardarPartida(progreso.getIdUsuario(), progreso.getIdHistoria()),
+        return new ResponseEntity<>(
+                progresoService.guardarOActualizarPartida(progreso.getIdUsuario(), progreso.getIdHistoria(),
+                        progreso.getHistoriasDesbloqueadas()),
                 HttpStatus.CREATED);
     }
 

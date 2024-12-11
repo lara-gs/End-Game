@@ -1,4 +1,5 @@
 package dev.lara.End.Game.models;
+
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -28,14 +29,17 @@ public class Progreso {
 
     @Column(name = "fecha", nullable = false)
     private LocalDate fecha;
+    @Column(name = "historias_desbloqueadas", nullable = false)
+    private String historiasDesbloqueadas;
 
     public Progreso() {
     }
 
-    public Progreso(Usuario usuario, Historia historia, LocalDate fecha) {
+    public Progreso(Usuario usuario, Historia historia, LocalDate fecha, String historiasDesbloqueadas) {
         this.usuario = usuario;
         this.historia = historia;
         this.fecha = fecha;
+        this.historiasDesbloqueadas = historiasDesbloqueadas;
     }
 
     public int getIdProgreso() {
@@ -70,8 +74,12 @@ public class Progreso {
         this.fecha = fecha;
     }
 
-    
-    
+    public String getHistoriasDesbloqueadas() {
+        return historiasDesbloqueadas;
+    }
 
+    public void setHistoriasDesbloqueadas(String historiasDesbloqueadas) {
+        this.historiasDesbloqueadas = historiasDesbloqueadas;
+    }
 
 }

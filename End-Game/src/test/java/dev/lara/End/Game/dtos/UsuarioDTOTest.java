@@ -2,87 +2,142 @@ package dev.lara.End.Game.dtos;
 
 import dev.lara.End.Game.models.Rol;
 import dev.lara.End.Game.models.Usuario;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UsuarioDTOTest {
 
-    @Test
-    void testConstructorVacio() {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
+    private Usuario usuario;
+    private UsuarioDTO usuarioDTO;
 
-        assertEquals(0, usuarioDTO.getIdUsuario());
-        assertNull(usuarioDTO.getNombreUsuario());
-        assertNull(usuarioDTO.getCorreo());
-        assertNull(usuarioDTO.getPassword());
-        assertNull(usuarioDTO.getRol());
+    @BeforeEach
+    void setUp() {
+        Rol rol = new Rol(1, "Administrador");
+        usuario = new Usuario(1, rol, "nombreUsuario", "password123", "correo@dominio.com");
+        usuarioDTO = new UsuarioDTO(usuario);
     }
 
     @Test
-    void testConstructorConParametros() {
-        RolDTO rolDTO = new RolDTO(1, "Admin");
-        UsuarioDTO usuarioDTO = new UsuarioDTO(1, "usuario1", "usuario1@correo.com", rolDTO, "password123");
-
+    void testUsuarioDTOInitialization() {
+        assertNotNull(usuarioDTO);
         assertEquals(1, usuarioDTO.getIdUsuario());
-        assertEquals("usuario1", usuarioDTO.getNombreUsuario());
-        assertEquals("usuario1@correo.com", usuarioDTO.getCorreo());
+        assertEquals("nombreUsuario", usuarioDTO.getNombreUsuario());
+        assertEquals("correo@dominio.com", usuarioDTO.getCorreo());
+        assertEquals("Administrador", usuarioDTO.getRol().getNombreRol());
         assertEquals("password123", usuarioDTO.getPassword());
-        assertNotNull(usuarioDTO.getRol());
-        assertEquals(1, usuarioDTO.getRol().getId());
-        assertEquals("Admin", usuarioDTO.getRol().getNombreRol());
     }
 
     @Test
-    void testConstructorConUsuario() {
-        Rol rol = new Rol(1, "Admin");
-        Usuario usuario = new Usuario(1, rol, "usuario1", "password123", "usuario1@correo.com");
-
-        UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-
-        assertEquals(1, usuarioDTO.getIdUsuario());
-        assertEquals("usuario1", usuarioDTO.getNombreUsuario());
-        assertEquals("usuario1@correo.com", usuarioDTO.getCorreo());
-        assertNotNull(usuarioDTO.getRol());
-        assertEquals(1, usuarioDTO.getRol().getId());
-        assertEquals("Admin", usuarioDTO.getRol().getNombreRol());
-    }
-
-    @Test
-    void testSettersYGetters() {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        
+    void testSetIdUsuario() {
         usuarioDTO.setIdUsuario(2);
-        usuarioDTO.setNombreUsuario("usuario2");
-        usuarioDTO.setCorreo("usuario2@correo.com");
-        usuarioDTO.setPassword("password456");
-        
-        RolDTO rolDTO = new RolDTO(2, "User");
-        usuarioDTO.setRol(rolDTO);
-
         assertEquals(2, usuarioDTO.getIdUsuario());
-        assertEquals("usuario2", usuarioDTO.getNombreUsuario());
-        assertEquals("usuario2@correo.com", usuarioDTO.getCorreo());
-        assertEquals("password456", usuarioDTO.getPassword());
-        assertNotNull(usuarioDTO.getRol());
-        assertEquals(2, usuarioDTO.getRol().getId());
-        assertEquals("User", usuarioDTO.getRol().getNombreRol());
     }
 
     @Test
-    void testSetRolNull() {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        
-        usuarioDTO.setRol(null);
-        
-        assertNull(usuarioDTO.getRol());
+    void testSetNombreUsuario() {
+        usuarioDTO.setNombreUsuario("nuevoNombre");
+        assertEquals("nuevoNombre", usuarioDTO.getNombreUsuario());
+    }
+
+    @Test
+    void testSetCorreo() {
+        usuarioDTO.setCorreo("nuevo@dominio.com");
+        assertEquals("nuevo@dominio.com", usuarioDTO.getCorreo());
+    }
+    @Test
+    void testSetRol() {
+        RolDTO nuevoRolDTO = new RolDTO(2, "Editor");
+        usuarioDTO.setRol(nuevoRolDTO);
+        assertEquals("Editor", usuarioDTO.getRol().getNombreRol());
+    }
+
+    @Test
+    void testSetPassword() {
+        usuarioDTO.setPassword("nuevoPassword123");
+        assertEquals("nuevoPassword123", usuarioDTO.getPassword());
     }
 
     @Test
     void testSetRolNombre() {
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        usuarioDTO.setRolNombre("Admin");
-        
-        assertEquals("Admin", usuarioDTO.getRolNombre());
+        usuarioDTO.setRolNombre("Moderador");
+        assertEquals("Moderador", usuarioDTO.getRolNombre());
+    }
+
+    @Test
+    void testConstructorDesdeUsuario() {
+        UsuarioDTO usuarioDTODesdeUsuario = new UsuarioDTO(usuario);
+        assertEquals(usuario.getIdUsuario(), usuarioDTODesdeUsuario.getIdUsuario());
+        assertEquals(usuario.getNombreUsuario(), usuarioDTODesdeUsuario.getNombreUsuario());
+        assertEquals(usuario.getCorreo(), usuarioDTODesdeUsuario.getCorreo());
+        assertEquals(usuario.getPassword(), usuarioDTODesdeUsuario.getPassword());
+        assertEquals("Administrador", usuarioDTODesdeUsuario.getRol().getNombreRol());
+    }
+
+    @Test
+    void testConstructorVacio() {
+        UsuarioDTO usuarioDTOVacio = new UsuarioDTO();
+        assertNotNull(usuarioDTOVacio);
+        assertEquals(0, usuarioDTOVacio.getIdUsuario());
+        assertNull(usuarioDTOVacio.getNombreUsuario());
+        assertNull(usuarioDTOVacio.getCorreo());
+        assertNull(usuarioDTOVacio.getRol());
+        assertNull(usuarioDTOVacio.getPassword());
+    }
+
+    @Test
+    void testEqualityBetweenDTOAndModel() {
+        assertNotNull(usuarioDTO);
+        assertEquals(usuario.getIdUsuario(), usuarioDTO.getIdUsuario());
+        assertEquals(usuario.getNombreUsuario(), usuarioDTO.getNombreUsuario());
+        assertEquals(usuario.getCorreo(), usuarioDTO.getCorreo());
+        assertEquals(usuario.getPassword(), usuarioDTO.getPassword());
+        assertEquals(usuario.getRol().getNombreRol(), usuarioDTO.getRol().getNombreRol());
+    }
+
+    @Test
+    void testRolDTOIsNotNull() {
+        assertNotNull(usuarioDTO.getRol());
+        assertNotNull(usuarioDTO.getRol().getNombreRol());
+    }
+
+    @Test
+    void testSetRolWithNullValue() {
+        usuarioDTO.setRol(null);
+        assertNull(usuarioDTO.getRol());
+    }
+
+    @Test
+    void testRolDTOConversionToRol() {
+        RolDTO rolDTO = new RolDTO(2, "Editor");
+        Rol rol = new Rol(rolDTO.getId(), rolDTO.getNombreRol());
+        assertEquals(rolDTO.getId(), rol.getId());
+        assertEquals(rolDTO.getNombreRol(), rol.getNombreRol());
+    }
+
+    @Test
+    void testChangeRol() {
+        RolDTO nuevoRolDTO = new RolDTO(3, "Moderador");
+        usuarioDTO.setRol(nuevoRolDTO);
+        assertEquals("Moderador", usuarioDTO.getRol().getNombreRol());
+    }
+
+    @Test
+    void testPasswordSetter() {
+        String nuevoPassword = "nuevoPassword789";
+        usuarioDTO.setPassword(nuevoPassword);
+        assertEquals(nuevoPassword, usuarioDTO.getPassword());
+    }
+
+    @Test
+    void testEmptyConstructor() {
+        UsuarioDTO usuarioDTOVacio = new UsuarioDTO();
+        assertNotNull(usuarioDTOVacio);
+        assertEquals(0, usuarioDTOVacio.getIdUsuario());
+        assertNull(usuarioDTOVacio.getNombreUsuario());
+        assertNull(usuarioDTOVacio.getCorreo());
+        assertNull(usuarioDTOVacio.getPassword());
+        assertNull(usuarioDTOVacio.getRol());
     }
 }

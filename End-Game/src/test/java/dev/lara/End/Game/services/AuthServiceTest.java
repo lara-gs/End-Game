@@ -1,83 +1,80 @@
 package dev.lara.End.Game.services;
 
-import dev.lara.End.Game.models.Usuario;
-import dev.lara.End.Game.repositories.UsuarioRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Optional;
-
-import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-class AuthServiceTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-    @InjectMocks
+import dev.lara.End.Game.models.Usuario;
+
+public class AuthServiceTest {
     private AuthService authService;
-
-    @Mock
-    private UsuarioRepository usuarioRepository;
-
+    private UsuarioRepositoryInMemory usuarioRepository;
     @Mock
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
+        usuarioRepository = new UsuarioRepositoryInMemory();
+        passwordEncoder = new BCryptPasswordEncoder();
+        authService = new AuthService(usuarioRepository, passwordEncoder);
     }
 
     @Test
     void testAuthenticateSuccess() {
+      
+        String correo = "test@example.com";
+        String rawPassword = "password123";
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
         Usuario usuario = new Usuario();
-        usuario.setCorreo("juan@mail.com");
-        usuario.setPassword("$2a$10$E6vU.nVs6WzZ1eD42G0pO.bTxocqzfe9aqQd4EdtuwH6sF4PekjBe"); 
+        usuario.setIdUsuario(1);
+        usuario.setCorreo(correo);
+        usuario.setPassword(encodedPassword);
 
-        when(usuarioRepository.findByCorreo("juan@mail.com")).thenReturn(Optional.of(usuario));
+        usuarioRepository.save(usuario);
 
-        when(passwordEncoder.matches("password123", usuario.getPassword())).thenReturn(true);
+        Usuario authenticatedUser = authService.authenticate(correo, rawPassword);
 
-        String resultado = authService.authenticate("juan@mail.com", "password123");
-        assertEquals("Autenticación exitosa", resultado);
-
-        verify(usuarioRepository, times(1)).findByCorreo("juan@mail.com");
-        verify(passwordEncoder, times(1)).matches("password123", usuario.getPassword());
+        assertNotNull(authenticatedUser);
+        assertEquals(correo, authenticatedUser.getCorreo());
     }
 
     @Test
     void testAuthenticateUserNotFound() {
- 
-        when(usuarioRepository.findByCorreo("juan@mail.com")).thenReturn(Optional.empty());
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            authService.authenticate("juan@mail.com", "password123");
+        String correo = "nonexistent@example.com";
+        String password = "password123";
+
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            authService.authenticate(correo, password);
         });
 
         assertEquals("Usuario no encontrado", exception.getMessage());
-        verify(usuarioRepository, times(1)).findByCorreo("juan@mail.com");
     }
 
     @Test
     void testAuthenticateIncorrectPassword() {
-        // Simulamos un usuario con correo "juan@mail.com" y contraseña "password123"
+
+        String correo = "test@example.com";
+        String rawPassword = "password123";
+        String wrongPassword = "wrongpassword";
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+
         Usuario usuario = new Usuario();
-        usuario.setCorreo("juan@mail.com");
-        usuario.setPassword("$2a$10$E6vU.nVs6WzZ1eD42G0pO.bTxocqzfe9aqQd4EdtuwH6sF4PekjBe"); 
+        usuario.setIdUsuario(1);
+        usuario.setCorreo(correo);
+        usuario.setPassword(encodedPassword);
 
-        when(usuarioRepository.findByCorreo("juan@mail.com")).thenReturn(Optional.of(usuario));
+        usuarioRepository.save(usuario);
 
-        when(passwordEncoder.matches("wrongpassword", usuario.getPassword())).thenReturn(false);
-
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            authService.authenticate("juan@mail.com", "wrongpassword");
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            authService.authenticate(correo, wrongPassword);
         });
 
         assertEquals("Credenciales incorrectas", exception.getMessage());
-
-        verify(usuarioRepository, times(1)).findByCorreo("juan@mail.com");
-        verify(passwordEncoder, times(1)).matches("wrongpassword", usuario.getPassword());
     }
 }

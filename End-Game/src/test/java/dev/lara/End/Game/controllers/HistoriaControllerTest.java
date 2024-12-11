@@ -1,53 +1,42 @@
 package dev.lara.End.Game.controllers;
 
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import dev.lara.End.Game.dtos.HistoriaDTO;
+import dev.lara.End.Game.models.Historia;
+import dev.lara.End.Game.services.HistoriaService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.http.ResponseEntity;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.test.context.support.WithMockUser;
+import static org.junit.jupiter.api.Assertions.*;
 
-
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import dev.lara.End.Game.dtos.HistoriaDTO;
-import dev.lara.End.Game.services.HistoriaService;
-
-
-@WebMvcTest(HistoriaController.class)
 class HistoriaControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    private HistoriaController historiaController;
 
-    @MockBean
-    private HistoriaService historiaService;
+    @BeforeEach
+    void setUp() {
+        dev.lara.End.Game.services.HistoriaRepositoryInMemory historiaRepositoryInMemory = new dev.lara.End.Game.services.HistoriaRepositoryInMemory();
+        Historia historiaMock = new Historia();
+        historiaMock.setIdHistoria(1);
+        historiaMock.setDescripcion("Historia 1");
+        historiaRepositoryInMemory.save(historiaMock);
+
+        HistoriaService historiaService = new HistoriaService(historiaRepositoryInMemory, null, null);
+        historiaController = new HistoriaController(historiaService);
+    }
 
     @Test
-    @WithMockUser(username = "testUser", roles = "USER") // Simula un usuario autenticado
-    void testCargarHistoria() throws Exception {
-        List<HistoriaDTO> historiasMock = Arrays.asList(
-            new HistoriaDTO(1, "Primera historia"),
-            new HistoriaDTO(2, "Segunda historia")
-        );
-    
-        when(historiaService.cargarHistoria()).thenReturn(historiasMock);
-    
-        mockMvc.perform(get("/api/historia/historias")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(2))
-                .andExpect(jsonPath("$[0].idHistoria").value(1))
-                .andExpect(jsonPath("$[0].descripcion").value("Primera historia"))
-                .andExpect(jsonPath("$[1].idHistoria").value(2))
-                .andExpect(jsonPath("$[1].descripcion").value("Segunda historia"));
+    void testCargarHistoria() {
+        ResponseEntity<List<HistoriaDTO>> response = historiaController.cargarHistoria();
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode().value());
+
+        List<HistoriaDTO> historias = response.getBody();
+        assertNotNull(historias);
+        assertEquals(1, historias.size());
+        assertEquals("Historia 1", historias.get(0).getDescripcion());
     }
-    
 }

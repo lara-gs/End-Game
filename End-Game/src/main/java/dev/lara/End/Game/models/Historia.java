@@ -1,6 +1,5 @@
 package dev.lara.End.Game.models;
 
-
 import java.util.List;
 
 import jakarta.persistence.Column;
@@ -17,7 +16,7 @@ public class Historia {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_historia")
-    private int idHistoria;
+    private int idHistoria = 0;
 
     @OneToMany(mappedBy = "historia")
     private List<Progreso> progresos;
@@ -43,7 +42,7 @@ public class Historia {
         return idHistoria;
     }
 
-    public void setIdHistoria(int idHistoria) {
+    public void setIdHistoria(Integer idHistoria) {
         this.idHistoria = idHistoria;
     }
 
@@ -71,5 +70,4 @@ public class Historia {
         this.descripcion = descripcion;
     }
 
-   
 }

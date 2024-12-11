@@ -23,10 +23,10 @@ public class UsuarioController {
     RolService rolService;
     UsuariosService usuariosService;
 
-
-    public UsuarioController(UsuariosService usuariosService, RolRepository rolRepository) {
+    public UsuarioController(UsuariosService usuariosService, RolRepository rolRepository, RolService rolService) {
         this.usuariosService = usuariosService;
         this.rolRepository = rolRepository;
+        this.rolService = rolService;
     }
 
     @DeleteMapping("/borrar/{IdUsuario}")
@@ -37,11 +37,10 @@ public class UsuarioController {
 
     @PostMapping("/public/registrar")
     public ResponseEntity<UsuarioDTO> registrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
-        // Mapear el nombre del rol a un objeto Rol
         Optional<Rol> optionalRol = rolRepository.findByNombreRol(usuarioDTO.getRolNombre());
-            Rol rol = optionalRol.orElseThrow(() -> new RuntimeException("Rol no encontrado con nombre " + usuarioDTO.getRolNombre()));
+        Rol rol = optionalRol
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado con nombre " + usuarioDTO.getRolNombre()));
 
-        // Registrar el usuario usando el servicio
         UsuarioDTO nuevoUsuario = usuariosService.registrarUsuario(
                 usuarioDTO.getNombreUsuario(),
                 usuarioDTO.getCorreo(),

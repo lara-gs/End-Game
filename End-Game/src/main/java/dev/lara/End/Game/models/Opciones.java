@@ -26,15 +26,23 @@ public class Opciones {
     @JoinColumn(name = "descripcion", nullable = false, columnDefinition = "TEXT")
     private String descripcion;
 
-    
+    @JoinColumn(name = "opcion_especial", nullable = true)
+    private boolean opcion_especial;
+
+    @JoinColumn(name = "id_especial_desbloqueada", nullable = true)
+    private Integer id_especial_desbloqueada;
+
     public Opciones() {
     }
 
-    public Opciones(int idOpcion, Usuario usuario, Historia historiaOrigen, Historia historiaDestino, String descripcion) {
+    public Opciones(int idOpcion, Usuario usuario, Historia historiaOrigen,
+            Historia historiaDestino, String descripcion, boolean opcion_especial, int id_especial_desbloqueada) {
         this.idOpcion = idOpcion;
         this.historiaOrigen = historiaOrigen;
         this.historiaDestino = historiaDestino;
         this.descripcion = descripcion;
+        this.opcion_especial = opcion_especial;
+        this.id_especial_desbloqueada = id_especial_desbloqueada;
     }
 
     public int getId_progreso() {
@@ -43,7 +51,7 @@ public class Opciones {
 
     public void setId_progreso(int id_progreso) {
         this.idOpcion = id_progreso;
-    }    
+    }
 
     public Historia getHistoriaOrigen() {
         return historiaOrigen;
@@ -75,6 +83,22 @@ public class Opciones {
 
     public void setIdOpcion(int idOpcion) {
         this.idOpcion = idOpcion;
-    }   
+    }
+
+    public boolean getOpcion_especial() {
+        return opcion_especial;
+    }
+
+    public void setOpcion_especial(boolean opcion_especial) {
+        this.opcion_especial = opcion_especial;
+    }
+
+    public int getId_especial_desbloqueada() {
+        return id_especial_desbloqueada;
+    }
+
+    public void setId_especial_desbloqueada(int id_especial_desbloqueada) {
+        this.id_especial_desbloqueada = id_especial_desbloqueada;
+    }
 
 }

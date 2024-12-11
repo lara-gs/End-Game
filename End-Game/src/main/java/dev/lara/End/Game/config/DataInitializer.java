@@ -27,28 +27,23 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    static Logger logger = LoggerFactory.getLogger(DataInitializer.class);
 
-final static Logger logger = LoggerFactory.getLogger(DataInitializer.class);
-
-@Override
-@Transactional
-public void run(String... args) throws Exception {
-    System.out.println("DataInitializer run method called");
-  
+    @Override
+    @Transactional
+    public void run(String... args) throws Exception {
         if (rolRepository.count() == 0) {
             Rol adminRole = new Rol("ADMIN");
             Rol playerRole = new Rol("PLAYER");
-            System.out.println("DataInitializer dentro del if");
             rolRepository.save(adminRole);
             rolRepository.save(playerRole);
         }
-
         if (usuarioRepository.count() == 0) {
             Usuario admin = new Usuario();
             admin.setNombreUsuario("superadmin");
             admin.setCorreo("admin@gmail.com");
             admin.setPassword(passwordEncoder.encode("admin123"));
-            Optional<Rol> optionalRol = rolRepository.findByNombreRol("ADMIN"); 
+            Optional<Rol> optionalRol = rolRepository.findByNombreRol("ADMIN");
             Rol rolAdmin = optionalRol.orElseThrow(() -> new RuntimeException("Rol no encontrado con nombre ADMIN"));
 
             admin.setRol(rolAdmin);
@@ -57,15 +52,15 @@ public void run(String... args) throws Exception {
             player.setNombreUsuario("player1");
             player.setCorreo("player1@game.com");
             player.setPassword(passwordEncoder.encode("player123"));
-            Optional<Rol> optionalPlayerRol = rolRepository.findByNombreRol("USER"); 
-            Rol rolPlayer = optionalPlayerRol.orElseThrow(() -> new RuntimeException("Rol no encontrado con nombre PLAYER"));
+            Optional<Rol> optionalPlayerRol = rolRepository.findByNombreRol("USER");
+            Rol rolPlayer = optionalPlayerRol
+                    .orElseThrow(() -> new RuntimeException("Rol no encontrado con nombre PLAYER"));
 
             player.setRol(rolPlayer);
 
             usuarioRepository.save(admin);
             usuarioRepository.save(player);
         }
-        System.out.println("DataInitializer fuera del if");
-}
-    
+    }
+
 }

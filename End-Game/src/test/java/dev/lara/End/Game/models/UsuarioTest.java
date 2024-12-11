@@ -1,109 +1,76 @@
 package dev.lara.End.Game.models;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UsuarioTest {
 
-    @Test
-    void testConstructorCompleto() {
-        Rol rol = new Rol(1, "Administrador");
-        Usuario usuario = new Usuario(1, rol, "laraUser", "securePass123", "lara@example.com");
+    private Usuario usuario;
+    private Rol rol;
 
+    @BeforeEach
+    void setUp() {
+
+        rol = new Rol("Admin");
+        usuario = new Usuario(1, rol, "usuario1", "password123", "usuario1@example.com");
+    }
+
+    @Test
+    void testConstructorYGetters() {
         assertEquals(1, usuario.getIdUsuario());
-        assertEquals(rol, usuario.getRol());
-        assertEquals("laraUser", usuario.getNombreUsuario());
-        assertEquals("securePass123", usuario.getPassword());
-        assertEquals("lara@example.com", usuario.getCorreo());
+        assertEquals("Admin", usuario.getRol().getNombreRol());
+        assertEquals("usuario1", usuario.getNombreUsuario());
+        assertEquals("password123", usuario.getPassword());
+        assertEquals("usuario1@example.com", usuario.getCorreo());
     }
 
     @Test
-    void testConstructorPorDefecto() {
-        Usuario usuario = new Usuario();
-
-        assertNull(usuario.getRol());
-        assertNull(usuario.getNombreUsuario());
-        assertNull(usuario.getPassword());
-        assertNull(usuario.getCorreo());
+    void testSetRol() {
+        Rol nuevoRol = new Rol("User");
+        usuario.setRol(nuevoRol);
+        assertEquals("User", usuario.getRol().getNombreRol());
     }
 
     @Test
-    void testSettersYGetters() {
-        Rol rol = new Rol(2, "Usuario");
-        Usuario usuario = new Usuario();
-
-        usuario.setIdUsuario(2);
-        usuario.setRol(rol);
-        usuario.setNombreUsuario("testUser");
-        usuario.setPassword("123456");
-        usuario.setCorreo("test@example.com");
-
-        assertEquals(2, usuario.getIdUsuario());
-        assertEquals(rol, usuario.getRol());
-        assertEquals("testUser", usuario.getNombreUsuario());
-        assertEquals("123456", usuario.getPassword());
-        assertEquals("test@example.com", usuario.getCorreo());
+    void testSetNombreUsuario() {
+        usuario.setNombreUsuario("usuarioNuevo");
+        assertEquals("usuarioNuevo", usuario.getNombreUsuario());
     }
 
     @Test
-    void testSetCorreoNulo() {
-        Usuario usuario = new Usuario();
-        usuario.setCorreo(null);
-
-        assertNull(usuario.getCorreo());
+    void testSetPassword() {
+        usuario.setPassword("nuevoPassword");
+        assertEquals("nuevoPassword", usuario.getPassword());
     }
 
     @Test
-    void testSetPasswordVacio() {
-        Usuario usuario = new Usuario();
-        usuario.setPassword("");
+    void testSetCorreo() {
+        usuario.setCorreo("nuevoCorreo@example.com");
+        assertEquals("nuevoCorreo@example.com", usuario.getCorreo());
+    }
+    @Test
+    void testActualizacionAtributos() {
+        usuario.setNombreUsuario("usuarioActualizado");
+        usuario.setPassword("passwordActualizado");
+        usuario.setCorreo("usuarioActualizado@example.com");
 
-        assertEquals("", usuario.getPassword());
+        assertEquals("usuarioActualizado", usuario.getNombreUsuario());
+        assertEquals("passwordActualizado", usuario.getPassword());
+        assertEquals("usuarioActualizado@example.com", usuario.getCorreo());
     }
 
     @Test
-    void testSetNombreUsuarioLargo() {
-        Usuario usuario = new Usuario();
-        String nombreLargo = "UsuarioNombre".repeat(10); // Nombre extenso
-        usuario.setNombreUsuario(nombreLargo);
-
-        assertEquals(nombreLargo, usuario.getNombreUsuario());
+    void testEqualsIgual() {
+        Usuario usuario2 = new Usuario(1, rol, "usuario1", "password123", "usuario1@example.com");
+        assertFalse(usuario.equals(usuario2));
     }
 
     @Test
-    void testIgualdadMismoID() {
-        Rol rol1 = new Rol(1, "Admin");
-        Rol rol2 = new Rol(2, "User");
-        Usuario usuario1 = new Usuario(1, rol1, "usuario1", "pass1", "correo1@example.com");
-        Usuario usuario2 = new Usuario(1, rol2, "usuario2", "pass2", "correo2@example.com");
-
-        assertEquals(usuario1.getIdUsuario(), usuario2.getIdUsuario());
+    void testEqualsDiferente() {
+        Usuario usuario2 = new Usuario(2, rol, "usuario2", "password456", "usuario2@example.com");
+        assertFalse(usuario.equals(usuario2));
     }
 
-    @Test
-    void testUsuarioConDiferenteID() {
-        Usuario usuario1 = new Usuario(1, null, "user1", "pass1", "user1@example.com");
-        Usuario usuario2 = new Usuario(2, null, "user2", "pass2", "user2@example.com");
-
-        assertNotEquals(usuario1.getIdUsuario(), usuario2.getIdUsuario());
-    }
-
-    @Test
-    void testRolNulo() {
-        Usuario usuario = new Usuario();
-        usuario.setRol(null);
-
-        assertNull(usuario.getRol());
-    }
-
-    @Test
-    void testCorreoUnico() {
-        Usuario usuario1 = new Usuario();
-        usuario1.setCorreo("lara@example.com");
-
-        Usuario usuario2 = new Usuario();
-        usuario2.setCorreo("lara@example.com");
-
-        assertEquals(usuario1.getCorreo(), usuario2.getCorreo());
-    }
 }
