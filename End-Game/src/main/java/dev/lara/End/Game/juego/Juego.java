@@ -37,7 +37,7 @@ public class Juego {
                 rolController, userController);
     }
 
-    public void iniciarJuego() {        
+    public void iniciarJuego() {
         System.out.println(Constants.MENSAJE_ASCII_DIBUJO_CIUDAD);
         System.out.println(Constants.MENSAJE_END_GAME_ASCII);
         loginORegistro();
@@ -86,7 +86,7 @@ public class Juego {
                 System.out.println(Constants.MENSAJE_LOGIN_INICIAR_O_BORRAR);
                 System.out.println(Constants.MENSAJE_LOGIN_INICIAR);
                 if(progreso.getIdProgreso() != 0) {
-                    System.out.println(Constants.MENSAJE_LOGIN_BORRAR);
+                System.out.println(Constants.MENSAJE_LOGIN_BORRAR);
                 }
                 int opcion = scanner.nextInt();
                 if (opcion == 2 && progreso.getIdProgreso() != 0) {
@@ -153,7 +153,7 @@ public class Juego {
 
     public void cargarHistorias() {
         historias = serviceManager.cargarHistorias();
-    }
+            }
 
     public void iniciarPartida() {
         boolean partidaIniciada = false;
@@ -168,6 +168,7 @@ public class Juego {
                 historia = historias.stream().findFirst().orElse(null);
 
             } else {
+                motrarMensajeBienvenida();
                 historia = historias.stream().filter(h -> h.getIdHistoria() == progreso.getIdHistoria()).findFirst()
                         .orElse(null);
             }
@@ -184,6 +185,10 @@ public class Juego {
         } while (opciones.size() > 0);
 
         gestionarFinPartida();
+    }
+
+    private void motrarMensajeBienvenida() {
+        System.out.println(Constants.MENSAJE_BIENVENIDA_PARTIDA);
     }
 
     @SuppressWarnings("resource")
