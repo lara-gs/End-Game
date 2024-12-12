@@ -106,6 +106,7 @@ public class Juego {
 
     public void registrarUsuario() {
         try {
+            @SuppressWarnings("resource")
             Scanner scanner = new Scanner(System.in);
             System.out.println(Constants.MENSAJE_INTRODUCIR_NOMBRE);
             String nombre = scanner.nextLine();
