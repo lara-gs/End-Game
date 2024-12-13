@@ -1,8 +1,7 @@
-/*package dev.lara.End.Game.controllers;
+package dev.lara.End.Game.controllers;
 
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
 
@@ -11,30 +10,22 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import dev.lara.End.Game.dtos.UsuarioDTO;
 import dev.lara.End.Game.models.Rol;
+import dev.lara.End.Game.repositories.RolRepository;
 import dev.lara.End.Game.services.RolService;
 import dev.lara.End.Game.services.UsuariosService;
-import dev.lara.End.Game.repositories.RolRepository;
 
-@WebMvcTest(UsuarioController.class)
 class UsuarioControllerTest {
-
-    @Autowired
-    private MockMvc mockMvc;
-
-    @Mock
-    private UsuariosService usuariosService;
 
     @Mock
     private RolRepository rolRepository;
+
+    @Mock
+    private UsuariosService usuariosService;
 
     @Mock
     private RolService rolService;
@@ -42,47 +33,68 @@ class UsuarioControllerTest {
     @InjectMocks
     private UsuarioController usuarioController;
 
-    private ObjectMapper objectMapper;
-
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        objectMapper = new ObjectMapper();
     }
 
     @Test
-    void testRegistrarUsuario() throws Exception {
-       
-        UsuarioDTO usuarioDTO = new UsuarioDTO();
-        Rol rol = new Rol();
-        rol.setNombreRol("USER");
-
-        when(rolRepository.findByNombreRol("USER")).thenReturn(Optional.of(rol));
-        when(usuariosService.registrarUsuario("testUser", "test@mail.com", "password", rol))
-                .thenReturn(usuarioDTO);
-
-        mockMvc.perform(post("/api/usuarios/public/registrar")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(usuarioDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nombreUsuario").value("testUser"))
-                .andExpect(jsonPath("$.correo").value("test@mail.com"))
-                .andExpect(jsonPath("$.rolNombre").value("USER"));
-
-        verify(rolRepository, times(1)).findByNombreRol("USER");
-        verify(usuariosService, times(1)).registrarUsuario("testUser", "test@mail.com", "password", rol);
-    }
-
-    @Test
-    void testBorrarPartida() throws Exception {
-
+    void testBorrarPartida() {
         int idUsuario = 1;
-
         doNothing().when(usuariosService).borrarUsuario(idUsuario);
 
-        mockMvc.perform(delete("/api/usuarios/borrar/" + idUsuario))
-                .andExpect(status().isNoContent());
+        ResponseEntity<Void> response = usuarioController.borrarPartida(idUsuario);
 
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
         verify(usuariosService, times(1)).borrarUsuario(idUsuario);
     }
-}*/
+
+    @SuppressWarnings("null")
+    @Test
+    void testRegistrarUsuario_RolEncontrado() {
+
+        String rolNombre = "Admin";
+        UsuarioDTO usuarioDTO = new UsuarioDTO(1, "Lara", "lara@example.com", null, "password");
+        usuarioDTO.setRolNombre(rolNombre);
+        Rol rol = new Rol();
+        rol.setNombreRol(rolNombre);
+
+        when(rolRepository.findByNombreRol(rolNombre)).thenReturn(Optional.of(rol));
+        when(usuariosService.registrarUsuario(
+                usuarioDTO.getNombreUsuario(),
+                usuarioDTO.getCorreo(),
+                usuarioDTO.getPassword(),
+                rol)).thenReturn(usuarioDTO);
+
+        ResponseEntity<UsuarioDTO> response = usuarioController.registrarUsuario(usuarioDTO);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(usuarioDTO.getNombreUsuario(), response.getBody().getNombreUsuario());
+        assertEquals(usuarioDTO.getCorreo(), response.getBody().getCorreo());
+        verify(rolRepository, times(1)).findByNombreRol(rolNombre);
+        verify(usuariosService, times(1)).registrarUsuario(
+                usuarioDTO.getNombreUsuario(),
+                usuarioDTO.getCorreo(),
+                usuarioDTO.getPassword(),
+                rol);
+    }
+
+    @Test
+    void testRegistrarUsuario_RolNoEncontrado() {
+
+        String rolNombre = "User";
+        UsuarioDTO usuarioDTO = new UsuarioDTO(1, "Lara", "lara@example.com", null, "password");
+        usuarioDTO.setRolNombre(rolNombre);
+
+        when(rolRepository.findByNombreRol(rolNombre)).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            usuarioController.registrarUsuario(usuarioDTO);
+        });
+
+        assertEquals("Rol no encontrado con nombre " + rolNombre, exception.getMessage());
+        verify(rolRepository, times(1)).findByNombreRol(rolNombre);
+        verifyNoInteractions(usuariosService);
+    }
+}
