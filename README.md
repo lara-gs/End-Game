@@ -84,6 +84,35 @@
   - Implementar más historias.
   - Añadir elementos más visuales.
 
+
+## Diagramas del Proyecto
+# End Game
+
+## Diagramas del Proyecto
+
+### Diagrama Entidad-Relación
+Este diagrama describe la estructura de la base de datos utilizada en el proyecto.
+
+![Diagrama Entidad-Relación](https://i.imgur.com/sv8nkSY.png "Diagrama Entidad-Relación")
+
+---
+
+### Diagrama UML
+El siguiente diagrama UML muestra la estructura de clases y las relaciones entre ellas.
+
+![Diagrama UML](https://www.planttext.com/api/plantuml/png/lLR1RXiX4BrRyZ-Wd8Zg77grgYf9VMYaA8wIvWCmq5qalBZ09cgZ_7lPDR03dZXHrTO7sxo1cRTl7h3dpZFh-wsUpxXcpf47rpEh37cUpqZuV52T9qf4D6Bttggk8PtPRgn4GznOAoji5z8_6IiYUcSqiKR7aJQDwkXf73dflumPw3xHaknpf7YJuwSfDAsyWRHeGHB9Kyu6wLxciwJ9GBNKuouJBxIOu9mvGA-J789v9I07QdzLpXkhM4KWmIKB8HstQiULwIOUgmd4cC0mM8-pMO-nYiiQ5lnVJ6wjQQnqjL4JNB9ferekbDXeywENJ30NvrmRplIAUKc-IzucHTC-w0jxvswqfVvDc2IONLzmtpEjVZ5x6xQL4epclRCaWU42j2u2EBVQgPpPvhMaQSucR0au9scH9Y6kMdrR_w6nG0RQvYTAAEOQwGwhlSywO3qrqHDx3FV4OPs_PWjGWkwolWajwLpqlhsNzb5ncUaaMx4GavrNF1Ie3hb5FYcFdmXrwkk0Vm9j-KpsfaaGnPk2fW6AfpG9efM3yHRKMM5htkFbHwC4USlG1vd_vJOixmDKjO03mS8eg5MkV73IhgHdIYVThxOx3ToHmqGR9eRnvS_XksDRIVlu1sSL7_2WeH4VzB6o2Jo3faTlnmLvov2BuUPU3ZeW_Kgvuybv9GgRf0rmyl64d9sDF-EjcSzp4CYl5bXmEgYEHSDJunE0m-Spk5En-hMqDVaZSP03RJqszLnsOdmb-mq0 "Diagrama UML")
+
+---
+
+### Diagrama de Testing
+Este diagrama muestra cómo se organizan y ejecutan las pruebas en el proyecto.
+
+![Diagrama de Testing](https://i.imgur.com/WaM22FN.png "Diagrama de Testing")
+
+
+
+
+
 ---
 
 ### Contribuciones
