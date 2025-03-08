@@ -29,7 +29,7 @@
 #### Testing
 - **JUnit**
 - **Mockito**
-- **Cobertura del 65%**
+- **Cobertura del 69%**
 
 #### Herramientas
 - **VSCode**
